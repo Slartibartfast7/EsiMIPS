@@ -5,6 +5,7 @@
 
 char *BIN_OPCODES[] = {"ADD", "ADDI", "AND", "BEQ", "BGTZ", "BLEZ", "BNE", "DIV", "J", "JAL", "JR", "LUI", "LW", "MFHI", "MFLO", "MULT", "NOP", "OR", "ROTR", "SLL", "SLT", "SRL", "SUB", "SW", "SYSCALL", "XOR"};
 char *(*FCT_OPCODES[])(const char*) = {decode_add, decode_addi, decode_and, decode_beq, decode_bgtz, decode_blez, decode_bne, decode_div, decode_j, decode_jal, decode_jr, decode_lui, decode_lw, decode_mfhi, decode_mflo, decode_mult, decode_nop, decode_or, decode_rotr, decode_sll, decode_slt, decode_srl, decode_sub, decode_sw, decode_syscall, decode_xor};
+const char *TXT_ALIAS[] = {"$zero", "$at", "$v0", "$v1", "$a0", "$a1", "$a2", "$a3", "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7", "$s0", "$s1", "$s2", "$s3", "$s4", "$s5", "$s6", "$s7", "$t8", "$t9", "$k0", "$k1", "$gp", "$sp", "$fp", "$ra"};
 
 char *decodeInstruction(char *bufEntree)
 {
@@ -74,9 +75,21 @@ char* operande(const char* instruction, int rangOperande)
 	i = 0;
 	while(testFrontiere[i] != ',' && testFrontiere[i] != '(' && testFrontiere[i] != ')' && i<strlen(testFrontiere))
 		i++;
+
 	char* operande = malloc(sizeof(char)*(i+1));
 	strncpy(operande,testFrontiere,i);
 	operande[i] = '\0';
+
+	// Alias
+	for (i = 0; i < 32; i++)
+	{
+		if (!strcmp(operande, TXT_ALIAS[i]))
+		{
+			strncpy(operande, "$ ", 3);
+			operande[1] = i + '0';
+		}
+	}
+
 	return operande;
 }
 
