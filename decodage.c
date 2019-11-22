@@ -4,36 +4,35 @@
 #include <string.h>
 
 char *BIN_OPCODES[] = {"ADD", "ADDI", "AND", "BEQ", "BGTZ", "BLEZ", "BNE", "DIV", "J", "JAL", "JR", "LUI", "LW", "MFHI", "MFLO", "MULT", "NOP", "OR", "ROTR", "SLL", "SLT", "SRL", "SUB", "SW", "SYSCALL", "XOR"};
-void (*FCT_OPCODES[])(const char*) = {decode_add, decode_addi, decode_and, decode_beq, decode_bgtz, decode_blez, decode_bne, decode_div, decode_j, decode_jal, decode_jr, decode_lui, decode_lw, decode_mfhi, decode_mflo, decode_mult, decode_nop, decode_or, decode_rotr, decode_sll, decode_slt, decode_srl, decode_sub, decode_sw, decode_syscall, decode_xor};
+char *(*FCT_OPCODES[])(const char*) = {decode_add, decode_addi, decode_and, decode_beq, decode_bgtz, decode_blez, decode_bne, decode_div, decode_j, decode_jal, decode_jr, decode_lui, decode_lw, decode_mfhi, decode_mflo, decode_mult, decode_nop, decode_or, decode_rotr, decode_sll, decode_slt, decode_srl, decode_sub, decode_sw, decode_syscall, decode_xor};
 
-// char *decodeInstruction(char *bufEntree)
-// {
-// 	int i;
-// 	char *bufptrEntree = bufEntree;
-// 	char bufptrSortie[33];
-// 	char opcode[8];
-// 	char *operandes[3];
+char *decodeInstruction(char *bufEntree)
+{
+	int i;
+	char *bufptrEntree = bufEntree;
+	char *bufptrSortie;
+	char opcode[8];
 
-// 	// Obtention de l'OPCODE
-// 	i = 0;
-// 	while (bufptr != ' ')
-// 	{
-// 		opcode[i] = bufptr;
-// 		bufptr++;
-// 		i++;
-// 	}
-// 	opcode[i] = '\0';
+	// Obtention de l'OPCODE
+	i = 0;
+	while (bufptrEntree[i] != ' ')
+	{
+		opcode[i] = bufptrEntree[i];
+		bufptrEntree++;
+		i++;
+	}
+	opcode[i] = '\0';
 
-// 	i = 0;
-// 	while (!strcmp(BIN_OPCODES[i], opcode))
-// 	{
-// 		i++;
-// 	}
+	i = 0;
+	while (!strcmp(BIN_OPCODES[i], opcode))
+	{
+		i++;
+	}
 
-// 	bufptrSortie = *FCT_OPCODES[i](bufEntree);
+	bufptrSortie = (*FCT_OPCODES[i])(bufEntree);
 
-// 	return bufptrSortie;
-// }
+	return bufptrSortie;
+}
 
 void lectureFichier(const char* fichierEntree)
 {
@@ -80,29 +79,29 @@ char* operande(const char* instruction, int rangOperande)
 	return operande;
 }
 
-void decode_add(const char* instruction){}
-void decode_addi(const char* instruction){}
-void decode_and(const char* instruction){}
-void decode_beq(const char* instruction){}
-void decode_bgtz(const char* instruction){}
-void decode_blez(const char* instruction){}
-void decode_bne(const char* instruction) {}
-void decode_div(const char* instruction){}
-void decode_j(const char* instruction){}
-void decode_jal(const char* instruction){}
-void decode_jr(const char* instruction){}
-void decode_lui(const char* instruction){}
-void decode_lw(const char* instruction){}
-void decode_mfhi(const char* instruction){}
-void decode_mflo(const char* instruction){}
-void decode_mult(const char* instruction){}
-void decode_nop(const char* instruction){}
-void decode_or(const char* instruction){}
-void decode_rotr(const char* instruction){}
-void decode_sll(const char* instruction){}
-void decode_slt(const char* instruction){}
-void decode_srl(const char* instruction){}
-void decode_sub(const char* instruction){}
-void decode_sw(const char* instruction){}
-void decode_syscall(const char* instruction){}
-void decode_xor(const char* instruction){}
+char *decode_add(const char* instruction){return NULL;}
+char *decode_addi(const char* instruction){return NULL;}
+char *decode_and(const char* instruction){return NULL;}
+char *decode_beq(const char* instruction){return NULL;}
+char *decode_bgtz(const char* instruction){return NULL;}
+char *decode_blez(const char* instruction){return NULL;}
+char *decode_bne(const char* instruction) {return NULL;}
+char *decode_div(const char* instruction){return NULL;}
+char *decode_j(const char* instruction){return NULL;}
+char *decode_jal(const char* instruction){return NULL;}
+char *decode_jr(const char* instruction){return NULL;}
+char *decode_lui(const char* instruction){return NULL;}
+char *decode_lw(const char* instruction){return NULL;}
+char *decode_mfhi(const char* instruction){return NULL;}
+char *decode_mflo(const char* instruction){return NULL;}
+char *decode_mult(const char* instruction){return NULL;}
+char *decode_nop(const char* instruction){return NULL;}
+char *decode_or(const char* instruction){return NULL;}
+char *decode_rotr(const char* instruction){return NULL;}
+char *decode_sll(const char* instruction){return NULL;}
+char *decode_slt(const char* instruction){return NULL;}
+char *decode_srl(const char* instruction){return NULL;}
+char *decode_sub(const char* instruction){return NULL;}
+char *decode_sw(const char* instruction){printf("Coucou\n");return NULL;}
+char *decode_syscall(const char* instruction){return NULL;}
+char *decode_xor(const char* instruction){return NULL;}
