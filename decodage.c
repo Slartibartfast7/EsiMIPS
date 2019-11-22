@@ -12,7 +12,7 @@ char *decodeInstruction(char *bufEntree)
 	char *bufptrEntree = bufEntree;
 	char *bufptrSortie;
 	char opcode[8];
-
+	char *instructionHexa = malloc(9*sizeof(char));
 	// Obtention de l'OPCODE
 	i = 0;
 	while (bufptrEntree[i] != ' ')
@@ -30,8 +30,8 @@ char *decodeInstruction(char *bufEntree)
 	}
 
 	bufptrSortie = (*FCT_OPCODES[i])(bufEntree);
-
-	return bufptrSortie;
+	sprintf(instructionHexa,"%08X",(unsigned int)strtol(bufptrSortie, NULL, 2));
+	return instructionHexa;
 }
 
 void lectureFichier(const char* fichierEntree)
@@ -44,21 +44,23 @@ void lectureFichier(const char* fichierEntree)
 	if(fichier == NULL) perror("Problème lors de l'ouverture du fichier");
 	while((lecture = getline(&ligne, &taille, fichier)) != -1)
 	{
-        printf("Ligne : %s", ligne);
+        printf("Ligne : %s\n", ligne);
         //ON LECRIT EN HEXA
+        printf("Ligne décodé : %s\n", decodeInstruction(ligne));
     }
     fclose(fichier);
 }
 
-char* conversionBinaire(const int aConvertir, char* binaire)
+char* conversionBinaire(const int aConvertir, const int taille)
 {
-	//Convertit une valeur < à 256 en binaire
+	//Convertit une valeur en binaire
+	char* binaire = malloc((taille + 1)*sizeof(char));
 	int i;
-    for(i = 7; i >= 0; --i)
+    for(i = taille-1; i >= 0; --i)
     {
-        sprintf(binaire+(7-i),"%c",(aConvertir & (1 << i)) ? '1' : '0');
+        sprintf(binaire+(taille-1-i),"%c",(aConvertir & (1 << i)) ? '1' : '0');
     }
-	binaire[(7-i)] = '\0';
+	binaire[(taille-1-i)] = '\0';
 	return binaire;
 }
 
@@ -79,7 +81,23 @@ char* operande(const char* instruction, int rangOperande)
 	return operande;
 }
 
-char *decode_add(const char* instruction){return NULL;}
+char *decode_add(const char* instruction)
+{
+	char* instructionBinaire = malloc(33*sizeof(char));
+	int tOperande;
+
+	sprintf(instructionBinaire, "000000");
+	tOperande = (int)strtol(operande(instruction,2)+1,NULL, 10);
+	sprintf(instructionBinaire+6, conversionBinaire(tOperande,5));
+	tOperande = (int)strtol(operande(instruction,3)+1,NULL, 10);
+	sprintf(instructionBinaire+6+5, conversionBinaire(tOperande,5));
+	tOperande = (int)strtol(operande(instruction,1)+1,NULL, 10);
+	sprintf(instructionBinaire+6+5+5, conversionBinaire(tOperande,5));
+	sprintf(instructionBinaire+6+5+5+5, "00000");
+	sprintf(instructionBinaire+6+5+5+5+5, "100000");
+	//printf("%s\n", instructionBinaire);
+	return instructionBinaire;
+}
 char *decode_addi(const char* instruction){return NULL;}
 char *decode_and(const char* instruction){return NULL;}
 char *decode_beq(const char* instruction){return NULL;}
@@ -102,6 +120,6 @@ char *decode_sll(const char* instruction){return NULL;}
 char *decode_slt(const char* instruction){return NULL;}
 char *decode_srl(const char* instruction){return NULL;}
 char *decode_sub(const char* instruction){return NULL;}
-char *decode_sw(const char* instruction){printf("Coucou\n");return NULL;}
+char *decode_sw(const char* instruction){return NULL;}
 char *decode_syscall(const char* instruction){return NULL;}
 char *decode_xor(const char* instruction){return NULL;}

@@ -3,7 +3,7 @@
 
 
 void lectureFichier(const char* fichierEntree);
-char* conversionBinaire(const int aConvertir, char* binaire);
+char* conversionBinaire(const int aConvertir, const int taille);
 char* operande(const char* instruction, int rangOperande);
 char *decodeInstruction(char *bufEntree);
 
