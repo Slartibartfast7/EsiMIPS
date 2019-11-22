@@ -208,7 +208,14 @@ char *decode_div(const char* instruction)
 	sprintf(instructionBinaire+6+5+5+5+5, "011010");
 	return instructionBinaire;
 }
-char *decode_j(const char* instruction){return NULL;}
+char *decode_j(const char* instruction)
+{
+	char* instructionBinaire = malloc(33*sizeof(char));
+
+	sprintf(instructionBinaire, "000010");
+	sprintf(instructionBinaire+6, operande(instruction,1));
+	return instructionBinaire;	
+}
 char *decode_jal(const char* instruction){return NULL;}
 char *decode_jr(const char* instruction){return NULL;}
 char *decode_lui(const char* instruction){return NULL;}
