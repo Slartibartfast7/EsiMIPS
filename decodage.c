@@ -18,14 +18,14 @@ char *decodeInstruction(char *bufEntree)
 	while (bufptrEntree[i] != ' ')
 	{
 		opcode[i] = bufptrEntree[i];
-		bufptrEntree++;
 		i++;
 	}
 	opcode[i] = '\0';
 
 	i = 0;
-	while (!strcmp(BIN_OPCODES[i], opcode))
+	while (strcmp(BIN_OPCODES[i], opcode))
 	{
+		printf("%d\n", i);
 		i++;
 	}
 
