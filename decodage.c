@@ -110,7 +110,7 @@ char *decode_add(const char* instruction)
 	return instructionBinaire;
 }
 char *decode_addi(const char* instruction)
-{	
+{
 	char* instructionBinaire = malloc(33*sizeof(char));
 	int tOperande;
 
@@ -179,7 +179,7 @@ char *decode_blez(const char* instruction)
 	sprintf(instructionBinaire+6+5+5, conversionBinaire(tOperande,16));
 	return instructionBinaire;
 }
-char *decode_bne(const char* instruction) 
+char *decode_bne(const char* instruction)
 {
 	char* instructionBinaire = malloc(33*sizeof(char));
 	int tOperande;
@@ -225,4 +225,19 @@ char *decode_srl(const char* instruction){return NULL;}
 char *decode_sub(const char* instruction){return NULL;}
 char *decode_sw(const char* instruction){return NULL;}
 char *decode_syscall(const char* instruction){return NULL;}
-char *decode_xor(const char* instruction){return NULL;}
+char *decode_xor(const char* instruction)
+{
+	char* instructionBinaire = malloc(33*sizeof(char));
+	int tOperande;
+
+	sprintf(instructionBinaire, "000000");
+	tOperande = (int)strtol(operande(instruction,2)+1,NULL, 10);
+	sprintf(instructionBinaire+6, conversionBinaire(tOperande,5));
+	tOperande = (int)strtol(operande(instruction,3)+1,NULL, 10);
+	sprintf(instructionBinaire+6+5, conversionBinaire(tOperande,5));
+	tOperande = (int)strtol(operande(instruction,1)+1,NULL, 10);
+	sprintf(instructionBinaire+6+5+5, conversionBinaire(tOperande,5));
+	sprintf(instructionBinaire+6+5+5+5, "00000");
+	sprintf(instructionBinaire+6+5+5+5+5, "100110");
+	return instructionBinaire;
+}
