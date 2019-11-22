@@ -25,6 +25,7 @@ char *decodeInstruction(char *bufEntree)
 	i = 0;
 	while (strcmp(BIN_OPCODES[i], opcode))
 	{
+		printf("%d\n", i);
 		i++;
 	}
 
