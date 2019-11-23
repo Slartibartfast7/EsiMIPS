@@ -1,1 +1,1 @@
-SLL $2,$4,5
+SYSCALL
