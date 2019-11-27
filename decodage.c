@@ -9,28 +9,42 @@ const char *TXT_ALIAS[] = {"$zero", "$at", "$v0", "$v1", "$a0", "$a1", "$a2", "$
 
 char *decodeInstruction(char *bufEntree)
 {
-	int i;
+	int i = 0;
 	char *bufptrEntree = bufEntree;
 	char *bufptrSortie;
 	char opcode[8];
 	char *instructionHexa = malloc(9*sizeof(char));
-	// Obtention de l'OPCODE
-	i = 0;
-	while (bufptrEntree[i] != ' ' &&  bufEntree[i] && bufptrEntree[i] != '#')
+	//Test commentaire
+	while(bufptrEntree[i])
 	{
-		opcode[i] = bufptrEntree[i];
-		i++;
+		if(bufptrEntree[i] == '#')
+			bufptrEntree[i] = '\0';
+		else
+			i++;
 	}
-	opcode[i] = '\0';
-
-	i = 0;
-	while (strcmp(BIN_OPCODES[i], opcode))
+	if(strlen(bufptrEntree) <= 1)
+		strcpy(instructionHexa,"");
+	else
 	{
-		i++;
-	}
+			// Obtention de l'OPCODE
+		i = 0;
+		while (bufptrEntree[i] != ' ' &&  bufEntree[i])
+		{
+			opcode[i] = bufptrEntree[i];
+			i++;
+		}
+		opcode[i] = '\0';
 
-	bufptrSortie = (*FCT_OPCODES[i])(bufEntree);
-	sprintf(instructionHexa,"%08X",(unsigned int)strtol(bufptrSortie, NULL, 2));
+		i = 0;
+		while (strcmp(BIN_OPCODES[i], opcode))
+		{
+			i++;
+		}
+
+		bufptrSortie = (*FCT_OPCODES[i])(bufEntree);
+		sprintf(instructionHexa,"%08X",(unsigned int)strtol(bufptrSortie, NULL, 2));
+	}
+	
 	return instructionHexa;
 }
 
@@ -40,16 +54,19 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 	int lecture;
 	size_t taille = 20;
 	char* ligne = (char *)malloc(taille * sizeof(char));
+	char hexa[9];
 	FILE* fichierIn = fopen(fichierEntree, "r");
 	FILE* fichierOut = fopen(fichierSortie, "w+");
 	if(fichierIn == NULL) perror("Problème lors de l'ouverture du fichier d'entrée");
 	if(fichierOut == NULL) perror("Problème de l'écriture du fichier de sortie");
 	while((lecture = getline(&ligne, &taille, fichierIn)) != -1)
 	{
+		strcpy(hexa,decodeInstruction(ligne));
         // printf("Ligne : %s\n", ligne);
         //ON LECRIT EN HEXA
         // printf("Ligne décodé : %s\n", decodeInstruction(ligne));
-        fprintf(fichierOut, "%s\n", decodeInstruction(ligne));
+        if(strlen(hexa))
+        	fprintf(fichierOut, "%s\n", hexa);
     }
     fclose(fichierIn);
     fclose(fichierOut);
