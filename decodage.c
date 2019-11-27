@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 char *BIN_OPCODES[] = {"ADD", "ADDI", "AND", "BEQ", "BGTZ", "BLEZ", "BNE", "DIV", "J", "JAL", "JR", "LUI", "LW", "MFHI", "MFLO", "MULT", "NOP", "OR", "ROTR", "SLL", "SLT", "SRL", "SUB", "SW", "SYSCALL", "XOR"};
 char *(*FCT_OPCODES[])(const char*) = {decode_add, decode_addi, decode_and, decode_beq, decode_bgtz, decode_blez, decode_bne, decode_div, decode_j, decode_jal, decode_jr, decode_lui, decode_lw, decode_mfhi, decode_mflo, decode_mult, decode_nop, decode_or, decode_rotr, decode_sll, decode_slt, decode_srl, decode_sub, decode_sw, decode_syscall, decode_xor};
@@ -15,6 +16,8 @@ char *decodeInstruction(char *bufEntree)
 	char opcode[8];
 	char *instructionHexa = malloc(9*sizeof(char));
 	//Test commentaire
+	while(isblank(bufptrEntree[i]))
+			bufptrEntree++;
 	while(bufptrEntree[i])
 	{
 		if(bufptrEntree[i] == '#')
@@ -22,12 +25,13 @@ char *decodeInstruction(char *bufEntree)
 		else
 			i++;
 	}
-	if(strlen(bufptrEntree) <= 1)
+	if(strlen(bufptrEntree) <= 2)
 		strcpy(instructionHexa,"");
 	else
 	{
-			// Obtention de l'OPCODE
 		i = 0;
+			// Obtention de l'OPCODE
+		
 		while (bufptrEntree[i] != ' ' &&  bufEntree[i])
 		{
 			opcode[i] = bufptrEntree[i];
@@ -35,6 +39,9 @@ char *decodeInstruction(char *bufEntree)
 		}
 		opcode[i] = '\0';
 
+		i = 0;
+		printf("%s\n", bufptrEntree);
+		while(bufptrEntree[i]) printf("%d\n", bufptrEntree[i++]);
 		i = 0;
 		while (strcmp(BIN_OPCODES[i], opcode))
 		{
@@ -44,7 +51,6 @@ char *decodeInstruction(char *bufEntree)
 		bufptrSortie = (*FCT_OPCODES[i])(bufEntree);
 		sprintf(instructionHexa,"%08X",(unsigned int)strtol(bufptrSortie, NULL, 2));
 	}
-	
 	return instructionHexa;
 }
 
