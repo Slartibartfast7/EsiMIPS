@@ -16,7 +16,7 @@ char *decodeInstruction(char *bufEntree)
 	char *instructionHexa = malloc(9*sizeof(char));
 	// Obtention de l'OPCODE
 	i = 0;
-	while (bufptrEntree[i] != ' ' &&  bufEntree[i])
+	while (bufptrEntree[i] != ' ' &&  bufEntree[i] && bufptrEntree[i] != '#')
 	{
 		opcode[i] = bufptrEntree[i];
 		i++;
@@ -34,21 +34,25 @@ char *decodeInstruction(char *bufEntree)
 	return instructionHexa;
 }
 
-void lectureFichier(const char* fichierEntree)
+void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 {
 	//Ouvre le fichier d'entrée, traduit chacune des lignes en hexadécimale
 	int lecture;
 	size_t taille = 20;
 	char* ligne = (char *)malloc(taille * sizeof(char));
-	FILE* fichier = fopen(fichierEntree, "r");
-	if(fichier == NULL) perror("Problème lors de l'ouverture du fichier");
-	while((lecture = getline(&ligne, &taille, fichier)) != -1)
+	FILE* fichierIn = fopen(fichierEntree, "r");
+	FILE* fichierOut = fopen(fichierSortie, "w+");
+	if(fichierIn == NULL) perror("Problème lors de l'ouverture du fichier d'entrée");
+	if(fichierOut == NULL) perror("Problème de l'écriture du fichier de sortie");
+	while((lecture = getline(&ligne, &taille, fichierIn)) != -1)
 	{
-        printf("Ligne : %s\n", ligne);
+        // printf("Ligne : %s\n", ligne);
         //ON LECRIT EN HEXA
-        printf("Ligne décodé : %s\n", decodeInstruction(ligne));
+        // printf("Ligne décodé : %s\n", decodeInstruction(ligne));
+        fprintf(fichierOut, "%s\n", decodeInstruction(ligne));
     }
-    fclose(fichier);
+    fclose(fichierIn);
+    fclose(fichierOut);
 }
 
 char* conversionBinaire(const int aConvertir, const int taille)
