@@ -15,9 +15,10 @@ char *decodeInstruction(char *bufEntree)
 	char *bufptrSortie;
 	char opcode[8];
 	char *instructionHexa = malloc(9*sizeof(char));
-	//Test commentaire
+	//Suppression des espaces / tabulations
 	while(isblank(bufptrEntree[i]))
 			bufptrEntree++;
+	//Suppression des commentaires
 	while(bufptrEntree[i])
 	{
 		if(bufptrEntree[i] == '#')
@@ -25,13 +26,13 @@ char *decodeInstruction(char *bufEntree)
 		else
 			i++;
 	}
+	//Pour ne pas écrire les lignes vides
 	if(strlen(bufptrEntree) <= 2)
 		strcpy(instructionHexa,"");
 	else
 	{
 		i = 0;
-			// Obtention de l'OPCODE
-		
+		// Obtention de l'OPCODE
 		while (bufptrEntree[i] != ' ' &&  bufptrEntree[i] && bufptrEntree[i] != '\r' && bufptrEntree[i] != '\n')
 		{
 			opcode[i] = bufptrEntree[i];
@@ -40,11 +41,12 @@ char *decodeInstruction(char *bufEntree)
 		opcode[i] = '\0';
 
 		i = 0;
+		//Détermination de l'OPCODE correspondant
 		while (strcmp(BIN_OPCODES[i], opcode))
 		{
 			i++;
 		}
-
+		//Fonction de décodage associée
 		bufptrSortie = (*FCT_OPCODES[i])(bufEntree);
 		sprintf(instructionHexa,"%08X",(unsigned int)strtol(bufptrSortie, NULL, 2));
 	}
@@ -58,17 +60,15 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 	size_t taille = 20;
 	char* ligne = (char *)malloc(taille * sizeof(char));
 	char hexa[9];
+	//Ouverture des fichiers d'entrée et de sortie
 	FILE* fichierIn = fopen(fichierEntree, "r");
 	FILE* fichierOut = fopen(fichierSortie, "w+");
 	if(fichierIn == NULL) perror("Problème lors de l'ouverture du fichier d'entrée");
 	if(fichierOut == NULL) perror("Problème de l'écriture du fichier de sortie");
-	while((lecture = getline(&ligne, &taille, fichierIn)) != -1)
+	while((lecture = getline(&ligne, &taille, fichierIn)) != -1) //Récupération d'une ligne jusqu'à la fin du fichier
 	{
 		strcpy(hexa,decodeInstruction(ligne));
-        // printf("Ligne : %s\n", ligne);
-        //ON LECRIT EN HEXA
-        // printf("Ligne décodé : %s\n", decodeInstruction(ligne));
-        if(strlen(hexa))
+        if(strlen(hexa)) //Si la ligne décodée n'est pas vide, on l'écrit
         	fprintf(fichierOut, "%s\n", hexa);
     }
     fclose(fichierIn);
@@ -77,7 +77,7 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 
 char* conversionBinaire(const int aConvertir, const int taille)
 {
-	//Convertit une valeur en binaire
+	//Convertit une valeur en une chaine de caractère binaire
 	char* binaire = malloc((taille + 1)*sizeof(char));
 	int i;
     for(i = taille-1; i >= 0; --i)
@@ -95,6 +95,7 @@ char* operande(const char* instruction, int rangOperande)
 	int i;
 	testFrontiere = strchr(instruction, ' ') + 1;
 	for(i = 0; i < rangOperande -1; i++)
+		//Recherche d'un caractère séparateur d'opérande
 		testFrontiere = strpbrk(testFrontiere, ",(") + 1;
 	i = 0;
 	while(testFrontiere[i] != ',' && testFrontiere[i] != '(' && testFrontiere[i] != ')' && i<strlen(testFrontiere))
@@ -107,6 +108,7 @@ char* operande(const char* instruction, int rangOperande)
 	// Alias
 	for (i = 0; i < 32; i++)
 	{
+		//Test de mnémoniques
 		if (!strcmp(operande, TXT_ALIAS[i]))
 		{
 			strncpy(operande, "$ ", 3);
