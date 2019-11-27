@@ -1,0 +1,10 @@
+# Descr :
+# 2's Complement Arithmetic Overflow
+# Requirements :
+# ADDI
+
+ADDI $8, $0, -1
+ADDI $9, $0, -2147483648
+SUB $10, $8, $9
+
+# Expected : Exception TRAP

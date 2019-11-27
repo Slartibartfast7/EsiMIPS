@@ -1,0 +1,9 @@
+# Descr :
+# Add 2 numbers
+# Requirements :
+# None
+
+ADDI $8, $0, -300
+ADDI $9, $8, 16
+
+# Expected : $9 value is -284

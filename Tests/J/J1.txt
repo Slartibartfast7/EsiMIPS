@@ -1,0 +1,11 @@
+# Descr :
+# Jump
+# Requirements :
+# ADDI
+
+ADDI $8, $0, 16
+J 2
+ADDI $9, $0, 16
+ADDI $9, $9, 4
+
+# Expected : $9 value is 4

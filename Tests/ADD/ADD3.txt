@@ -1,0 +1,10 @@
+# Descr :
+# Add 2 numbers
+# Requirements :
+# ADDI
+
+ADDI $8, $0, -300
+ADDI $9, $0, 16
+ADD $10, $8, $9
+
+# Expected : $10 value is -284

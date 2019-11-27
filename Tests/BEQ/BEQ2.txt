@@ -1,0 +1,16 @@
+# Descr :
+# Don't branch
+# Requirements :
+# ADDI, JR, NOP
+
+ADDI $8, $0, 1
+ADDI $9, $0, 16
+BEQ $8, $9, 4
+NOP
+ADDI $11, $0, 4
+JR 3
+ADDI $11, $0, 8
+JR 1
+NOP
+
+# Expected : $11 value is 4

@@ -1,0 +1,10 @@
+# Descr :
+# Buffer Overflow
+# Requirements :
+# ADDI
+
+ADDI $8, $0, -3000000000
+ADDI $9, $0, -3000000000
+ADD $10, $8, $9
+
+# Expected : Exception TRAP

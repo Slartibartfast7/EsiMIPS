@@ -1,0 +1,12 @@
+# Descr :
+# Divide whthout rest
+# Requirements :
+# ADDI, MFLO, MFHI
+
+ADDI $8, $0, 16
+ADDI $9, $0, 16
+DIV $8, $9
+MFHI $10
+MFLO $11
+
+# Expected : $11 value is 1, $10 value is 0

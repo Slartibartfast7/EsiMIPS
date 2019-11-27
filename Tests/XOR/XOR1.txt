@@ -1,0 +1,10 @@
+# Descr :
+# Bitwise logical XOR
+# Requirements :
+# ADDI
+
+ADDI $8, $0, 4
+ADDI $9, $0, 6
+XOR $10, $8, $9
+
+# Expected : $10 value is 2

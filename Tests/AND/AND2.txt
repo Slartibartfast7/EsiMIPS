@@ -1,0 +1,10 @@
+# Descr :
+# False Bitwise logical AND
+# Requirements :
+# None
+
+ADDI $8, $0, 300
+ADDI $9, $0, 400
+AND $10, $8, $9
+
+# Expected : $10 value is 0
