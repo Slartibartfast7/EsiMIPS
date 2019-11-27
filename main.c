@@ -3,8 +3,9 @@
 
 int main(int argc, char const *argv[])
 {
-	conversionFichier("tests/in3.txt", "hexified/out3.txt");
-	// printf("OPERANDE:%s\n",operande("SW $3,10($0)",1));
-	// printf("%s\n",decodeInstruction("ADDI $8,$0,1"));
+	if (argc != 3)
+		printf("Usage: ./main [InputFile] [OutputFile]\n");
+	else
+		conversionFichier(argv[1], argv[2]);
 	return 0;
 }
