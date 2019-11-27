@@ -32,16 +32,13 @@ char *decodeInstruction(char *bufEntree)
 		i = 0;
 			// Obtention de l'OPCODE
 		
-		while (bufptrEntree[i] != ' ' &&  bufEntree[i])
+		while (bufptrEntree[i] != ' ' &&  bufptrEntree[i] && bufptrEntree[i] != '\r' && bufptrEntree[i] != '\n')
 		{
 			opcode[i] = bufptrEntree[i];
 			i++;
 		}
 		opcode[i] = '\0';
 
-		i = 0;
-		printf("%s\n", bufptrEntree);
-		while(bufptrEntree[i]) printf("%d\n", bufptrEntree[i++]);
 		i = 0;
 		while (strcmp(BIN_OPCODES[i], opcode))
 		{
