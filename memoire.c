@@ -4,6 +4,7 @@
 
 void ecritureMemoire(int8_t* memoire, int32_t adresse, int32_t valeur, int taille)
 {
+	if(adresse >= TAILLE_MEMOIRE || adresse < 0) perror("Out of memory");
 	int i;
 	for(i = 0; i < taille/8; i++)
 	{
@@ -15,6 +16,7 @@ void ecritureMemoire(int8_t* memoire, int32_t adresse, int32_t valeur, int taill
 int32_t lectureMemoire(int8_t* memoire, int32_t adresse)
 //Renvoie la valeur présente dans la mémoire à l'index correspondant à l'adresse indiquée, -1 si l'index n'existe pas
 {
+	if(adresse >= TAILLE_MEMOIRE || adresse < 0) perror("Out of memory");
 	return memoire[adresse];
 }
 

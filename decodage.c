@@ -57,6 +57,7 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 {
 	//Ouvre le fichier d'entrée, traduit chacune des lignes en hexadécimale
 	int lecture;
+	int positionMemoire = 0;
 	size_t taille = 20;
 	char* ligne = (char *)malloc(taille * sizeof(char));
 	char hexa[9];
@@ -69,7 +70,10 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 	{
 		strcpy(hexa,decodeInstruction(ligne));
         if(strlen(hexa)) //Si la ligne décodée n'est pas vide, on l'écrit
+        {
         	fprintf(fichierOut, "%s\n", hexa);
+        	//+ écrire tout dans la mémoire
+        }
     }
     fclose(fichierIn);
     fclose(fichierOut);
