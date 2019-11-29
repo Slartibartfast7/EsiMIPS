@@ -9,5 +9,9 @@ int main(int argc, char const *argv[])
 		printf("Usage: ./main [InputFile] [OutputFile]\n");
 	else
 		conversionFichier(argv[1], argv[2]);
+	
+	ecritureMemoire(memoire, 12, 0x54, 8);
+	ecritureMemoire(memoire, 24, 0x12345678, 32);
+	afficherMemoire(memoire);
 	return 0;
 }
