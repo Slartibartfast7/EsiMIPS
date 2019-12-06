@@ -1,6 +1,7 @@
 #include "decodage.h"
 #include "registre.h"
 #include "memoire.h"
+#include "instructions.h"
 #include <stdio.h>
 
 int main(int argc, char const *argv[])
@@ -11,8 +12,6 @@ int main(int argc, char const *argv[])
 		conversionFichier(argv[1], argv[2]);
 	
 	PC = DEBUT_PROGRAMME;
-	ecritureMemoire(memoire, 12, 0x54, 8);
-	ecritureMemoire(memoire, 24, 0x12345678, 32);
 	afficherMemoire(memoire);
 	return 0;
 }
