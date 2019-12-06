@@ -13,5 +13,6 @@ int main(int argc, char const *argv[])
 	ecritureMemoire(memoire, 12, 0x54, 8);
 	ecritureMemoire(memoire, 24, 0x12345678, 32);
 	afficherMemoire(memoire);
+	printf("%X\n", memoire[67]);
 	return 0;
 }

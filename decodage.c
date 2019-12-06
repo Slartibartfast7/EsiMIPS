@@ -1,8 +1,10 @@
 #include "decodage.h"
+#include "memoire.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
 
 char *BIN_OPCODES[] = {"ADD", "ADDI", "AND", "BEQ", "BGTZ", "BLEZ", "BNE", "DIV", "J", "JAL", "JR", "LUI", "LW", "MFHI", "MFLO", "MULT", "NOP", "OR", "ROTR", "SLL", "SLT", "SRL", "SUB", "SW", "SYSCALL", "XOR"};
 char *(*FCT_OPCODES[])(const char*) = {decode_add, decode_addi, decode_and, decode_beq, decode_bgtz, decode_blez, decode_bne, decode_div, decode_j, decode_jal, decode_jr, decode_lui, decode_lw, decode_mfhi, decode_mflo, decode_mult, decode_nop, decode_or, decode_rotr, decode_sll, decode_slt, decode_srl, decode_sub, decode_sw, decode_syscall, decode_xor};
@@ -57,7 +59,7 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 {
 	//Ouvre le fichier d'entrée, traduit chacune des lignes en hexadécimale
 	int lecture;
-	int positionMemoire = 0;
+	int positionMemoire = 64;
 	size_t taille = 20;
 	char* ligne = (char *)malloc(taille * sizeof(char));
 	char hexa[9];
@@ -72,6 +74,9 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
         if(strlen(hexa)) //Si la ligne décodée n'est pas vide, on l'écrit
         {
         	fprintf(fichierOut, "%s\n", hexa);
+        	printf("%08X\n", strtol(hexa,NULL,16));
+        	ecritureMemoire(memoire, positionMemoire, strtol(hexa, NULL, 16), 32);
+        	positionMemoire += 4;
         	//+ écrire tout dans la mémoire
         }
     }
