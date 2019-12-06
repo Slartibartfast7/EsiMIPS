@@ -13,7 +13,7 @@ void ecritureMemoire(uint8_t* memoire, uint32_t adresse, uint32_t valeur, int ta
 }
 
 
-uint32_t lectureMemoire(uint8_t* memoire, uint32_t adresse)
+uint8_t lectureMemoire(uint8_t* memoire, uint32_t adresse)
 //Renvoie la valeur présente dans la mémoire à l'index correspondant à l'adresse indiquée, -1 si l'index n'existe pas
 {
 	if(adresse >= TAILLE_MEMOIRE || adresse < 0) perror("Out of memory");

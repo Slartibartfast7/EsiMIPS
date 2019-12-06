@@ -8,7 +8,7 @@
 uint8_t memoire[TAILLE_MEMOIRE];
 
 void ecritureMemoire(uint8_t* memoire, uint32_t adresse, uint32_t valeur, int taille);
-uint32_t lectureMemoire(uint8_t* memoire, uint32_t adresse);
+uint8_t lectureMemoire(uint8_t* memoire, uint32_t adresse);
 void afficherMemoire(uint8_t* memoire);
 
 #endif

@@ -2,7 +2,6 @@
 
 uint32_t recupererInstruction(int adresse);
 void decoderInstruction(uint32_t instruction);
-uint8_t trouverOperande(uint32_t instruction, int rangOperande);
 
 void executer_add(uint32_t instruction);
 void executer_addi(uint32_t instruction);
