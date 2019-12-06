@@ -4,10 +4,10 @@
 #include <stdint.h>
 #define TAILLE_MEMOIRE 128
 
-int8_t memoire[TAILLE_MEMOIRE];
+uint8_t memoire[TAILLE_MEMOIRE];
 
-void ecritureMemoire(int8_t* memoire, int32_t adresse, int32_t valeur, int taille);
-int32_t lectureMemoire(int8_t* memoire, int32_t adresse);
-void afficherMemoire(int8_t* memoire);
+void ecritureMemoire(uint8_t* memoire, uint32_t adresse, uint32_t valeur, int taille);
+uint32_t lectureMemoire(uint8_t* memoire, uint32_t adresse);
+void afficherMemoire(uint8_t* memoire);
 
 #endif

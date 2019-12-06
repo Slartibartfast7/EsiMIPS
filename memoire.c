@@ -2,25 +2,25 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void ecritureMemoire(int8_t* memoire, int32_t adresse, int32_t valeur, int taille)
+void ecritureMemoire(uint8_t* memoire, uint32_t adresse, uint32_t valeur, int taille)
 {
 	if(adresse >= TAILLE_MEMOIRE || adresse < 0) perror("Out of memory");
 	int i;
 	for(i = 0; i < taille/8; i++)
 	{
-		memoire[adresse + i] = valeur >> (8*((taille/8) -1 -i));
+				memoire[adresse + i] = valeur >> (8*((taille/8) -1 -i));
 	}
 }
 
 
-int32_t lectureMemoire(int8_t* memoire, int32_t adresse)
+uint32_t lectureMemoire(uint8_t* memoire, uint32_t adresse)
 //Renvoie la valeur présente dans la mémoire à l'index correspondant à l'adresse indiquée, -1 si l'index n'existe pas
 {
 	if(adresse >= TAILLE_MEMOIRE || adresse < 0) perror("Out of memory");
 	return memoire[adresse];
 }
 
-void afficherMemoire(int8_t* memoire)
+void afficherMemoire(uint8_t* memoire)
 {
 	int i;
 	printf("MEMOIRE :\n==========================================================\n");

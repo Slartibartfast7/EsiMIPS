@@ -74,10 +74,8 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
         if(strlen(hexa)) //Si la ligne décodée n'est pas vide, on l'écrit
         {
         	fprintf(fichierOut, "%s\n", hexa);
-        	printf("%08X\n", strtol(hexa,NULL,16));
         	ecritureMemoire(memoire, positionMemoire, strtol(hexa, NULL, 16), 32);
         	positionMemoire += 4;
-        	//+ écrire tout dans la mémoire
         }
     }
     fclose(fichierIn);
