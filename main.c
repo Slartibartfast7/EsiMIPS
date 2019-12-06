@@ -10,9 +10,9 @@ int main(int argc, char const *argv[])
 	else
 		conversionFichier(argv[1], argv[2]);
 	
+	PC = DEBUT_PROGRAMME;
 	ecritureMemoire(memoire, 12, 0x54, 8);
 	ecritureMemoire(memoire, 24, 0x12345678, 32);
 	afficherMemoire(memoire);
-	printf("%X\n", memoire[67]);
 	return 0;
 }

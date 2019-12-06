@@ -59,7 +59,7 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 {
 	//Ouvre le fichier d'entrée, traduit chacune des lignes en hexadécimale
 	int lecture;
-	int positionMemoire = 64;
+	int positionMemoire = DEBUT_PROGRAMME;
 	size_t taille = 20;
 	char* ligne = (char *)malloc(taille * sizeof(char));
 	char hexa[9];

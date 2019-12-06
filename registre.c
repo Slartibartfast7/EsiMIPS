@@ -1,13 +1,13 @@
 #include "registre.h"
 #include <stdio.h>
 
-void ecritureRegistre(int32_t registre, int32_t valeur)
+void ecritureRegistre(uint32_t registre, uint32_t valeur)
 //Ecrit la valeur indiquée dans le registre indiqué
 {
 	registreProc[registre] = valeur;
 }
 
-int32_t lectureRegistre(int32_t registre)
+uint32_t lectureRegistre(uint32_t registre)
 //Renvoie la valeur présente dans le registre indiquée
 {
 	return registreProc[registre];
