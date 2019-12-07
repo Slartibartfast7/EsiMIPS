@@ -12,6 +12,5 @@ int main(int argc, char const *argv[])
 		conversionFichier(argv[1], argv[2]);
 	
 	PC = DEBUT_PROGRAMME;
-	afficherMemoire(memoire);
 	return 0;
 }

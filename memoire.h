@@ -2,7 +2,7 @@
 #define MEMOIRE
 
 #include <stdint.h>
-#define TAILLE_MEMOIRE 128
+#define TAILLE_MEMOIRE 256
 #define DEBUT_PROGRAMME 64
 
 uint8_t memoire[TAILLE_MEMOIRE];

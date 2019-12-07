@@ -2,8 +2,10 @@
 #include "memoire.h"
 #include <stdio.h>
 
-int BIN_OPCODES[] = {32, 8, 36, 4, 7, 6, 5, 26, 2, 3, 8, 15, 35, 16, 18, 24, 0, 37, 2, 0, 42, 2, 34, 43, 12, 38};
-void (*FCT_OPCODES[])(uint32_t) = {executer_add, executer_addi, executer_and, executer_beq, executer_bgtz, executer_blez, executer_bne, executer_div, executer_j, executer_jal, executer_jr, executer_lui, executer_lw, executer_mfhi, executer_mflo, executer_mult, executer_nop, executer_or, executer_rotr, executer_sll, executer_slt, executer_srl, executer_sub, executer_sw, executer_syscall, executer_xor};
+int OPCODES_R[] = {32, 36, 26, 8, 16, 18, 24, 37, 2, 0, 42, 2, 34, 12, 38};
+int OPCODES_IJ[] = {8, 4, 7, 6, 5, 2, 3, 15, 35, 43};
+void (*FCT_OPCODES_EXEC_R[])(uint32_t) = {executer_add, executer_and, executer_div, executer_jr, executer_mfhi, executer_mflo, executer_mult, executer_or, executer_rotr, executer_sll, executer_slt, executer_srl, executer_sub, executer_syscall, executer_xor};
+void (*FCT_OPCODES_EXEC_IJ[])(uint32_t) = {executer_addi, executer_beq, executer_bgtz, executer_blez, executer_bne, executer_j, executer_jal, executer_lui, executer_lw, executer_sw};
 
 uint32_t recupererInstruction(int adresse) 
 {
@@ -18,32 +20,140 @@ uint32_t recupererInstruction(int adresse)
 }
 void decoderInstruction(uint32_t instruction)
 {
-
+	int i;
+	//printf("%08X\n", instruction);
+	if((instruction & 0xFC000000) == 0) //R-Type
+	{
+		for(i = 0; i < sizeof(OPCODES_R)/sizeof(int); i++)
+		{
+			if((instruction & 0x3F) == OPCODES_R[i])
+			{
+				if(instruction == 0)
+					executer_nop(instruction);
+				else if((instruction & 0x3F) == 2)
+				{
+					if(instruction & 0x00200000)
+						executer_rotr(instruction);
+					else
+						executer_srl(instruction);
+					break;
+				}
+				else
+					(*FCT_OPCODES_EXEC_R[i])(instruction);
+			}
+		}
+	}
+	else //I/J-Type
+	{
+		for(i = 0; i < sizeof(OPCODES_IJ)/sizeof(int); i++)
+		{
+			if(((instruction & 0xFC000000) >> 26) == OPCODES_IJ[i])
+				(*FCT_OPCODES_EXEC_IJ[i])(instruction);
+		}
+	}
 }
 
-void executer_add(uint32_t instruction) {}
-void executer_addi(uint32_t instruction) {}
-void executer_and(uint32_t instruction) {}
-void executer_beq(uint32_t instruction) {}
-void executer_bgtz(uint32_t instruction) {}
-void executer_blez(uint32_t instruction) {}
-void executer_bne(uint32_t instruction) {}
-void executer_div(uint32_t instruction) {}
-void executer_j(uint32_t instruction) {}
-void executer_jal(uint32_t instruction) {}
-void executer_jr(uint32_t instruction) {}
-void executer_lui(uint32_t instruction) {}
-void executer_lw(uint32_t instruction) {}
-void executer_mfhi(uint32_t instruction) {}
-void executer_mflo(uint32_t instruction) {}
-void executer_mult(uint32_t instruction) {}
-void executer_nop(uint32_t instruction) {}
-void executer_or(uint32_t instruction) {}
-void executer_rotr(uint32_t instruction) {}
-void executer_sll(uint32_t instruction) {}
-void executer_slt(uint32_t instruction) {}
-void executer_srl(uint32_t instruction) {}
-void executer_sub(uint32_t instruction) {}
-void executer_sw(uint32_t instruction) {}
-void executer_syscall(uint32_t instruction) {}
-void executer_xor(uint32_t instruction) {}
+void executer_add(uint32_t instruction) 
+{
+	printf("C'est un ADD\n");
+}
+void executer_addi(uint32_t instruction) 
+{
+	printf("C'est un ADDI\n");
+}
+void executer_and(uint32_t instruction) 
+{
+	printf("C'est un AND\n");
+}
+void executer_beq(uint32_t instruction) 
+{
+	printf("C'est un BEQ\n");
+}
+void executer_bgtz(uint32_t instruction) 
+{
+	printf("C'est un BGTZ\n");
+}
+void executer_blez(uint32_t instruction) 
+{
+	printf("C'est un BLEZ\n");
+}
+void executer_bne(uint32_t instruction) 
+{
+	printf("C'est un BNE\n");
+}
+void executer_div(uint32_t instruction) 
+{
+	printf("C'est un DIV\n");
+}
+void executer_j(uint32_t instruction) 
+{
+	printf("C'est un J\n");
+}
+void executer_jal(uint32_t instruction) 
+{
+	printf("C'est un JAL\n");
+}
+void executer_jr(uint32_t instruction) 
+{
+	printf("C'est un JR\n");
+}
+void executer_lui(uint32_t instruction) 
+{
+	printf("C'est un LUI\n");
+}
+void executer_lw(uint32_t instruction) 
+{
+	printf("C'est un LW\n");
+}
+void executer_mfhi(uint32_t instruction) 
+{
+	printf("C'est un MFHI\n");
+}
+void executer_mflo(uint32_t instruction) 
+{
+	printf("C'est un MFLO\n");
+}
+void executer_mult(uint32_t instruction) 
+{
+	printf("C'est un MULT\n");
+}
+void executer_nop(uint32_t instruction) 
+{
+	printf("C'est un NOP\n");
+}
+void executer_or(uint32_t instruction) 
+{
+	printf("C'est un OR\n");
+}
+void executer_rotr(uint32_t instruction) 
+{
+	printf("C'est un ROTR\n");
+}
+void executer_sll(uint32_t instruction) 
+{
+	printf("C'est un SLL\n");
+}
+void executer_slt(uint32_t instruction) 
+{
+	printf("C'est un SLT\n");
+}
+void executer_srl(uint32_t instruction) 
+{
+	printf("C'est un SRL\n");
+}
+void executer_sub(uint32_t instruction) 
+{
+	printf("C'est un SUB\n");
+}
+void executer_sw(uint32_t instruction) 
+{
+	printf("C'est un SW\n");
+}
+void executer_syscall(uint32_t instruction) 
+{
+	printf("C'est un SYSCALL\n");
+}
+void executer_xor(uint32_t instruction) 
+{
+	printf("C'est un XOR\n");
+}
