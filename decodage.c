@@ -19,7 +19,7 @@ char *decodeInstruction(char *bufEntree)
 	char *instructionHexa = malloc(9*sizeof(char));
 	//Suppression des espaces / tabulations
 	while(isblank(bufptrEntree[i]))
-			bufptrEntree++;
+		bufptrEntree++;
 	//Suppression des commentaires
 	while(bufptrEntree[i])
 	{
@@ -49,7 +49,7 @@ char *decodeInstruction(char *bufEntree)
 			i++;
 		}
 		//Fonction de décodage associée
-		bufptrSortie = (*FCT_OPCODES[i])(bufEntree);
+		bufptrSortie = (*FCT_OPCODES[i])(bufptrEntree);
 		sprintf(instructionHexa,"%08X",(unsigned int)strtol(bufptrSortie, NULL, 2));
 	}
 	return instructionHexa;
@@ -59,7 +59,6 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 {
 	//Ouvre le fichier d'entrée, traduit chacune des lignes en hexadécimale
 	int lecture;
-	int positionMemoire = DEBUT_PROGRAMME;
 	size_t taille = 20;
 	char* ligne = (char *)malloc(taille * sizeof(char));
 	char hexa[9];
@@ -74,8 +73,8 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
         if(strlen(hexa)) //Si la ligne décodée n'est pas vide, on l'écrit
         {
         	fprintf(fichierOut, "%s\n", hexa);
-        	ecritureMemoire(memoire, positionMemoire, strtol(hexa, NULL, 16), 32);
-        	positionMemoire += 4;
+        	ecritureMemoire(memoire, TAILLE_PROGRAMME + DEBUT_PROGRAMME, strtol(hexa, NULL, 16), 32);
+        	TAILLE_PROGRAMME += 4;
         }
     }
     fclose(fichierIn);

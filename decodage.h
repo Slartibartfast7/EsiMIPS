@@ -1,7 +1,7 @@
 #ifndef DECODAGE
 #define DECODAGE
 
-
+int TAILLE_PROGRAMME;
 void conversionFichier(const char* fichierEntree, const char* fichierSortie);
 char* conversionBinaire(const int aConvertir, const int taille);
 char* operande(const char* instruction, int rangOperande);

@@ -1,5 +1,6 @@
 #include "instructions.h"
 #include "memoire.h"
+#include "registre.h"
 #include <stdio.h>
 
 int OPCODES_R[] = {32, 36, 26, 8, 16, 18, 24, 37, 2, 0, 42, 2, 34, 12, 38};
@@ -60,6 +61,10 @@ void executer_add(uint32_t instruction)
 void executer_addi(uint32_t instruction) 
 {
 	printf("C'est un ADDI\n");
+	//Integer Overflow ??
+	int32_t temp;
+	temp = lectureRegistre((instruction & 0x03D0000) >> 21) + (instruction & 0x0000FFFF);
+	ecritureRegistre((instruction & 0x001F0000) >> 16,temp);
 }
 void executer_and(uint32_t instruction) 
 {

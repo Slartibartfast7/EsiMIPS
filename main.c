@@ -9,8 +9,18 @@ int main(int argc, char const *argv[])
 	if (argc != 3)
 		printf("Usage: ./main [InputFile] [OutputFile]\n");
 	else
+	{
+		TAILLE_PROGRAMME = 0;
 		conversionFichier(argv[1], argv[2]);
+		PC = DEBUT_PROGRAMME;
+		while(PC != DEBUT_PROGRAMME + TAILLE_PROGRAMME)
+		{
+			decoderInstruction(recupererInstruction(PC));
+			afficherRegistres();
+			//afficherMemoire(memoire);
+			PC += 4;
+		}
+	}
 	
-	PC = DEBUT_PROGRAMME;
 	return 0;
 }
