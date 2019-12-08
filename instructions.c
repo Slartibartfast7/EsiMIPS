@@ -57,13 +57,17 @@ void decoderInstruction(uint32_t instruction)
 void executer_add(uint32_t instruction) 
 {
 	printf("C'est un ADD\n");
+	//Integer Overflow ??
+	int32_t temp;
+	temp = lectureRegistre((instruction & 0x03E00000) >> 21) + lectureRegistre((instruction & 0x001F0000) >> 16);
+	ecritureRegistre((instruction & 0x0000F800) >> 11,temp);
 }
 void executer_addi(uint32_t instruction) 
 {
 	printf("C'est un ADDI\n");
 	//Integer Overflow ??
 	int32_t temp;
-	temp = lectureRegistre((instruction & 0x03D0000) >> 21) + (instruction & 0x0000FFFF);
+	temp = lectureRegistre((instruction & 0x03E00000) >> 21) + (instruction & 0x0000FFFF);
 	ecritureRegistre((instruction & 0x001F0000) >> 16,temp);
 }
 void executer_and(uint32_t instruction) 
