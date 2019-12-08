@@ -5,6 +5,7 @@ void ecritureRegistre(uint32_t registre, uint32_t valeur)
 //Ecrit la valeur indiquée dans le registre indiqué
 {
 	registreProc[registre] = valeur;
+	if(registre == 0x0) registreProc[registre] = 0x0;
 }
 
 uint32_t lectureRegistre(uint32_t registre)

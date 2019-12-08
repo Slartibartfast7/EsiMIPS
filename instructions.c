@@ -73,6 +73,7 @@ void executer_addi(uint32_t instruction)
 void executer_and(uint32_t instruction) 
 {
 	printf("C'est un AND\n");
+	ecritureRegistre((instruction & 0x0000F800) >> 11,lectureRegistre((instruction & 0x03E00000) >> 21) & lectureRegistre((instruction & 0x001F0000) >> 16));
 }
 void executer_beq(uint32_t instruction) 
 {
