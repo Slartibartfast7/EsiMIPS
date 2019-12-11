@@ -58,7 +58,7 @@ void executer_add(uint32_t instruction)
 {
 	printf("C'est un ADD\n");
 	//Integer Overflow ??
-	int32_t temp;
+	uint32_t temp;
 	temp = lectureRegistre((instruction & 0x03E00000) >> 21) + lectureRegistre((instruction & 0x001F0000) >> 16);
 	ecritureRegistre((instruction & 0x0000F800) >> 11,temp);
 }
@@ -66,7 +66,7 @@ void executer_addi(uint32_t instruction)
 {
 	printf("C'est un ADDI\n");
 	//Integer Overflow ??
-	int32_t temp;
+	uint32_t temp;
 	temp = lectureRegistre((instruction & 0x03E00000) >> 21) + (instruction & 0x0000FFFF);
 	ecritureRegistre((instruction & 0x001F0000) >> 16,temp);
 }
@@ -94,6 +94,14 @@ void executer_bne(uint32_t instruction)
 void executer_div(uint32_t instruction) 
 {
 	printf("C'est un DIV\n");
+	uint32_t q,r;
+	if((lectureRegistre((instruction & 0x001F0000) >> 16)) != 0)
+	{
+		q = ((lectureRegistre((instruction & 0x03E00000) >> 21)) / (lectureRegistre((instruction & 0x001F0000) >> 16)));
+		r = ((lectureRegistre((instruction & 0x03E00000) >> 21)) % (lectureRegistre((instruction & 0x001F0000) >> 16)));
+	}
+	LO = q;
+	HI = r;
 }
 void executer_j(uint32_t instruction) 
 {
