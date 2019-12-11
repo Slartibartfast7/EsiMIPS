@@ -118,6 +118,7 @@ void executer_jr(uint32_t instruction)
 void executer_lui(uint32_t instruction) 
 {
 	printf("C'est un LUI\n");
+	ecritureRegistre((instruction & 0x001F0000) >> 16, (instruction & 0x0000FFFF) << 16);
 }
 void executer_lw(uint32_t instruction) 
 {
