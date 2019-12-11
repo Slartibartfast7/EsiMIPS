@@ -1,0 +1,10 @@
+# Descr :
+# Store Word
+# Requirements :
+# ADDI
+
+ADDI $8,$0,32767
+ADDI $9,$0,4
+SW $8,0($9)
+
+# Expected : @4 value is 44
