@@ -21,6 +21,6 @@ int main(int argc, char const *argv[])
 			PC += 4;
 		}
 	}
-	
+
 	return 0;
 }
