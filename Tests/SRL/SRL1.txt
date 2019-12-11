@@ -1,0 +1,9 @@
+# Descr :
+# Shift Word Right Logical
+# Requirements :
+# ADDI
+
+ADDI $8,$0,128
+SRL $9,$8,2
+
+# Expected : $9 value is 32

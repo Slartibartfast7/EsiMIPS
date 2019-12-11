@@ -159,14 +159,15 @@ void executer_slt(uint32_t instruction)
 void executer_srl(uint32_t instruction)
 {
 	printf("C'est un SRL\n");
+	ecritureRegistre(((instruction & 0x0000F800) >> 11), (lectureRegistre((instruction & 0x001F0000) >> 16) >> ((instruction & 0x000003C0) >> 6)));
 }
 void executer_sub(uint32_t instruction)
 {
+	// NE MARCHE PAS POUR LES NOMBRES NEGATIFS
 	printf("C'est un SUB\n");
-	int32_t res = (int32_t)(lectureRegistre((instruction & 0x03E00000) >> 21));
-	printf("%d\n", res);
-	if (res < 0)
-		printf("Exception : negative value\n");
+	uint64_t res = (lectureRegistre((instruction & 0x03E00000) >> 21) - lectureRegistre((instruction & 0x001F0000) >> 16));
+	if (res > 4294967296)
+		printf("Exception : overflow\n");
 	else
 		ecritureRegistre(((instruction & 0x0000F800) >> 11), (lectureRegistre((instruction & 0x03E00000) >> 21) - lectureRegistre((instruction & 0x001F0000) >> 16)));
 }
