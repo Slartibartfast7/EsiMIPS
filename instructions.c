@@ -123,6 +123,17 @@ void executer_lui(uint32_t instruction)
 void executer_lw(uint32_t instruction)
 {
 	printf("C'est un LW\n");
+	uint16_t offset = instruction & 0x0000FFFF;
+	uint32_t address = lectureRegistre((instruction & 0x03E00000) >> 21) + offset;
+	if ((address & 0x00000003) != 0)
+		printf("Exception, adresse incorrecte\n");
+	else
+	{
+		ecritureRegistre(((instruction & 0x001F0000) >> 16), lectureMemoire(memoire, address) << 24);
+		ecritureRegistre(((instruction & 0x001F0000) >> 16), lectureMemoire(memoire, address+1) << 16);
+		ecritureRegistre(((instruction & 0x001F0000) >> 16), lectureMemoire(memoire, address+2) << 8);
+		ecritureRegistre(((instruction & 0x001F0000) >> 16), lectureMemoire(memoire, address+3));
+	}
 }
 void executer_mfhi(uint32_t instruction)
 {
@@ -162,13 +173,7 @@ void executer_srl(uint32_t instruction)
 }
 void executer_sub(uint32_t instruction)
 {
-	printf("C'est un SUB\n");
-	int32_t res = (int32_t)(lectureRegistre((instruction & 0x03E00000) >> 21));
-	printf("%d\n", res);
-	if (res < 0)
-		printf("Exception : negative value\n");
-	else
-		ecritureRegistre(((instruction & 0x0000F800) >> 11), (lectureRegistre((instruction & 0x03E00000) >> 21) - lectureRegistre((instruction & 0x001F0000) >> 16)));
+	printf("C'est un SUB\n");	
 }
 void executer_sw(uint32_t instruction)
 {
