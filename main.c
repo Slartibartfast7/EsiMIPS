@@ -13,6 +13,8 @@ int main(int argc, char const *argv[])
 		TAILLE_PROGRAMME = 0;
 		conversionFichier(argv[1], argv[2]);
 		PC = DEBUT_PROGRAMME;
+		HI = 0;
+		LO = 0;
 		while(PC != DEBUT_PROGRAMME + TAILLE_PROGRAMME)
 		{
 			decoderInstruction(recupererInstruction(PC));
