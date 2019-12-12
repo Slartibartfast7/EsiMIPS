@@ -56,7 +56,7 @@ void decoderInstruction(uint32_t instruction)
 
 void executer_add(uint32_t instruction)
 {
-	printf("C'est un ADD\n");
+	printf("C'est un ADD $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	//Integer Overflow ??
 	uint32_t temp;
 	temp = lectureRegistre((instruction & 0x03E00000) >> 21) + lectureRegistre((instruction & 0x001F0000) >> 16);
@@ -64,7 +64,7 @@ void executer_add(uint32_t instruction)
 }
 void executer_addi(uint32_t instruction)
 {
-	printf("C'est un ADDI\n");
+	printf("C'est un ADDI $%d,$%d,%d\n", (instruction & 0x001F0000) >> 16, (instruction & 0x03E00000) >> 21, instruction & 0x0000FFFF);
 	//Integer Overflow ??
 	uint32_t temp;
 	temp = lectureRegistre((instruction & 0x03E00000) >> 21) + (instruction & 0x0000FFFF);
@@ -72,28 +72,29 @@ void executer_addi(uint32_t instruction)
 }
 void executer_and(uint32_t instruction)
 {
-	printf("C'est un AND\n");
+	printf("C'est un AND $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	ecritureRegistre((instruction & 0x0000F800) >> 11,lectureRegistre((instruction & 0x03E00000) >> 21) & lectureRegistre((instruction & 0x001F0000) >> 16));
 }
 void executer_beq(uint32_t instruction)
 {
-	printf("C'est un BEQ\n");
+	printf("C'est un BEQ $%d,$%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF);
 }
 void executer_bgtz(uint32_t instruction)
 {
-	printf("C'est un BGTZ\n");
+	printf("C'est un BGTZ $%d,%d\n", (instruction & 0x03E00000) >> 21, instruction & 0x0000FFFF);
+	//PROBLEME NOMBRE NEGATIF
 }
 void executer_blez(uint32_t instruction)
 {
-	printf("C'est un BLEZ\n");
+	printf("C'est un BLEZ $%d,%d\n", (instruction & 0x03E00000) >> 21, instruction & 0x0000FFFF);
 }
 void executer_bne(uint32_t instruction)
 {
-	printf("C'est un BNE\n");
+	printf("C'est un BNE $%d,$%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF);
 }
 void executer_div(uint32_t instruction)
 {
-	printf("C'est un DIV\n");
+	printf("C'est un DIV $%d,$%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	uint32_t q,r;
 	if((lectureRegistre((instruction & 0x001F0000) >> 16)) != 0)
 	{
@@ -105,24 +106,24 @@ void executer_div(uint32_t instruction)
 }
 void executer_j(uint32_t instruction)
 {
-	printf("C'est un J\n");
+	printf("C'est un J %d\n", (instruction & 0x03FFFFFF));
 }
 void executer_jal(uint32_t instruction)
 {
-	printf("C'est un JAL\n");
+	printf("C'est un JAL %d\n", (instruction & 0x03FFFFFF));
 }
 void executer_jr(uint32_t instruction)
 {
-	printf("C'est un JR\n");
+	printf("C'est un JR $%d\n", (instruction & 0x03E00000) >> 21);
 }
 void executer_lui(uint32_t instruction)
 {
-	printf("C'est un LUI\n");
+	printf("C'est un LUI $%d,%d\n", (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF);
 	ecritureRegistre((instruction & 0x001F0000) >> 16, (instruction & 0x0000FFFF) << 16);
 }
 void executer_lw(uint32_t instruction)
 {
-	printf("C'est un LW\n");
+	printf("C'est un LW $%d,%d($%d)\n", (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF, (instruction & 0x03E00000) >> 21);
 	uint16_t offset = instruction & 0x0000FFFF;
 	uint32_t address = lectureRegistre((instruction & 0x03E00000) >> 21) + offset;
 	if ((address & 0x00000003) != 0)
@@ -137,15 +138,15 @@ void executer_lw(uint32_t instruction)
 }
 void executer_mfhi(uint32_t instruction)
 {
-	printf("C'est un MFHI\n");
+	printf("C'est un MFHI $%d\n", (instruction & 0x0000F800) >> 11);
 }
 void executer_mflo(uint32_t instruction)
 {
-	printf("C'est un MFLO\n");
+	printf("C'est un MFLO $%d\n", (instruction & 0x0000F800) >> 11);
 }
 void executer_mult(uint32_t instruction)
 {
-	printf("C'est un MULT\n");
+	printf("C'est un MULT $%d,$%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 }
 void executer_nop(uint32_t instruction)
 {
@@ -153,42 +154,38 @@ void executer_nop(uint32_t instruction)
 }
 void executer_or(uint32_t instruction)
 {
-	printf("C'est un OR\n");
+	printf("C'est un OR $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 }
 void executer_rotr(uint32_t instruction)
 {
-	printf("C'est un ROTR\n");
+	printf("C'est un ROTR $%d,$%d,%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x001F0000) >> 16, (instruction & 0x000007C0) >> 6);
 }
 void executer_sll(uint32_t instruction)
 {
-	printf("C'est un SLL\n");
+	printf("C'est un SLL $%d,$%d,%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x001F0000) >> 16, (instruction & 0x000007C0) >> 6);
 }
 void executer_slt(uint32_t instruction)
 {
-	printf("C'est un SLT\n");
+	printf("C'est un SLT $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 }
 void executer_srl(uint32_t instruction)
 {
-	printf("C'est un SRL\n");
+	printf("C'est un SRL $%d,$%d,%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x001F0000) >> 16, (instruction & 0x000007C0) >> 6);
 	ecritureRegistre(((instruction & 0x0000F800) >> 11), (lectureRegistre((instruction & 0x001F0000) >> 16) >> ((instruction & 0x000003C0) >> 6)));
 }
 void executer_sub(uint32_t instruction)
 {
-<<<<<<< HEAD
 	// NE MARCHE PAS POUR LES NOMBRES NEGATIFS
-	printf("C'est un SUB\n");
+	printf("C'est un SUB $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	uint64_t res = (lectureRegistre((instruction & 0x03E00000) >> 21) - lectureRegistre((instruction & 0x001F0000) >> 16));
 	if (res > 4294967296)
 		printf("Exception : overflow\n");
 	else
 		ecritureRegistre(((instruction & 0x0000F800) >> 11), (lectureRegistre((instruction & 0x03E00000) >> 21) - lectureRegistre((instruction & 0x001F0000) >> 16)));
-=======
-	printf("C'est un SUB\n");	
->>>>>>> 83dc4d6da5d337e005a0c59592dfe1a0fe714fbc
 }
 void executer_sw(uint32_t instruction)
 {
-	printf("C'est un SW\n");
+	printf("C'est un SW $%d,%d($%d)\n", (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF, (instruction & 0x03E00000) >> 21);
 	uint16_t offset = instruction & 0x0000FFFF;
 	uint32_t address = lectureRegistre((instruction & 0x03E00000) >> 21) + offset;
 	if ((address & 0x00000003) != 0)
@@ -202,6 +199,6 @@ void executer_syscall(uint32_t instruction)
 }
 void executer_xor(uint32_t instruction)
 {
-	printf("C'est un XOR\n");
+	printf("C'est un XOR $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	ecritureRegistre(((instruction & 0x0000F800) >> 11), (lectureRegistre((instruction & 0x03E00000) >> 21) ^ lectureRegistre((instruction & 0x001F0000) >> 16)));
 }
