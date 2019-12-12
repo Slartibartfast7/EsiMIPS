@@ -81,7 +81,7 @@ void executer_beq(uint32_t instruction)
 }
 void executer_bgtz(uint32_t instruction)
 {
-	printf("C'est un BGTZ $%d,%d\n", (instruction & 0x03E00000) >> 21, instruction & 0x0000FFFF);
+	printf("C'est un BGTZ $%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x0000FFFF));
 	//PROBLEME NOMBRE NEGATIF
 }
 void executer_blez(uint32_t instruction)
@@ -155,6 +155,7 @@ void executer_nop(uint32_t instruction)
 void executer_or(uint32_t instruction)
 {
 	printf("C'est un OR $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
+	ecritureRegistre((instruction & 0x0000F800) >> 11,lectureRegistre((instruction & 0x03E00000) >> 21) | lectureRegistre((instruction & 0x001F0000) >> 16));
 }
 void executer_rotr(uint32_t instruction)
 {

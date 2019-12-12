@@ -1,0 +1,10 @@
+# Descr :
+# True Bitwise logical OR
+# Requirements :
+# ADDI
+
+ADDI $8,$0,16
+ADDI $9,$0,5
+OR $10,$8,$9
+
+# Expected : $10 value is 21
