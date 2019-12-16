@@ -64,10 +64,10 @@ void executer_add(int32_t instruction)
 }
 void executer_addi(int32_t instruction)
 {
-	printf("C'est un ADDI $%d,$%d,%d\n", (instruction & 0x001F0000) >> 16, (instruction & 0x03E00000) >> 21, (int16_t)(instruction & 0x0000FFFF));
+	printf("C'est un ADDI $%d,$%d,%d\n", (instruction & 0x001F0000) >> 16, (instruction & 0x03E00000) >> 21, instruction & 0x0000FFFF);
 	//Integer Overflow ??
 	int32_t temp;
-	temp = lectureRegistre((instruction & 0x001F0000) >> 16) + lectureRegistre((instruction & 0x03E00000) >> 21) + (int16_t)(instruction & 0x0000FFFF);
+	temp = lectureRegistre((instruction & 0x001F0000) >> 16) + lectureRegistre((instruction & 0x03E00000) >> 21) + (instruction & 0x0000FFFF);
 	ecritureRegistre((instruction & 0x001F0000) >> 16,temp);
 }
 void executer_and(int32_t instruction)
@@ -77,27 +77,27 @@ void executer_and(int32_t instruction)
 }
 void executer_beq(int32_t instruction)
 {
-	printf("C'est un BEQ $%d,$%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16, (int16_t)(instruction & 0x0000FFFF));
+	printf("C'est un BEQ $%d,$%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF);
 	if (lectureRegistre((instruction & 0x03E00000) >> 21) == lectureRegistre((instruction & 0x001F0000) >> 16))
-		PC += ((int16_t)(instruction & 0x0000FFFF) << 2);
+		PC += ((instruction & 0x0000FFFF) << 2);
 }
 void executer_bgtz(int32_t instruction)
 {
-	printf("C'est un BGTZ $%d,%d\n", (instruction & 0x03E00000) >> 21, (int16_t)(instruction & 0x0000FFFF));
+	printf("C'est un BGTZ $%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x0000FFFF));
 	if (lectureRegistre((instruction & 0x03E00000) >> 21) > 0)
-		PC += ((int16_t)(instruction & 0x0000FFFF) << 2);
+		PC += ((instruction & 0x0000FFFF) << 2);
 }
 void executer_blez(int32_t instruction)
 {
-	printf("C'est un BLEZ $%d,%d\n", (instruction & 0x03E00000) >> 21, (int16_t)(instruction & 0x0000FFFF));
+	printf("C'est un BLEZ $%d,%d\n", (instruction & 0x03E00000) >> 21, instruction & 0x0000FFFF);
 	if (lectureRegistre((instruction & 0x03E00000) >> 21) <= 0)
-		PC += ((int16_t)(instruction & 0x0000FFFF) << 2);
+		PC += ((instruction & 0x0000FFFF) << 2);
 }
 void executer_bne(int32_t instruction)
 {
-	printf("C'est un BNE $%d,$%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16, (int16_t)(instruction & 0x0000FFFF));
+	printf("C'est un BNE $%d,$%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF);
 	if (lectureRegistre((instruction & 0x03E00000) >> 21) != lectureRegistre((instruction & 0x001F0000) >> 16))
-		PC += ((int16_t)(instruction & 0x0000FFFF) << 2);
+		PC += ((instruction & 0x0000FFFF) << 2);
 }
 void executer_div(int32_t instruction)
 {
@@ -116,11 +116,14 @@ void executer_j(int32_t instruction)
 	uint32_t addr = (instruction & 0x03FFFFFF) << 2;
 	printf("C'est un J 0x%08X\n", addr);
 	PC = addr;
-
 }
 void executer_jal(int32_t instruction)
 {
-	printf("C'est un JAL %d\n", (instruction & 0x03FFFFFF));
+	// A tester
+	uint32_t addr = (instruction & 0x03FFFFFF) << 2;
+	printf("C'est un JAL %d\n", addr);
+	ecritureRegistre(31, (PC+8));
+	PC = addr;
 }
 void executer_jr(int32_t instruction)
 {
@@ -128,13 +131,13 @@ void executer_jr(int32_t instruction)
 }
 void executer_lui(int32_t instruction)
 {
-	printf("C'est un LUI $%d,%d\n", (instruction & 0x001F0000) >> 16, (int16_t)(instruction & 0x0000FFFF));
-	ecritureRegistre((instruction & 0x001F0000) >> 16, (int16_t)(instruction & 0x0000FFFF) << 16);
+	printf("C'est un LUI $%d,%d\n", (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF);
+	ecritureRegistre((instruction & 0x001F0000) >> 16, (instruction & 0x0000FFFF) << 16);
 }
 void executer_lw(int32_t instruction)
 {
-	printf("C'est un LW $%d,%d($%d)\n", (instruction & 0x001F0000) >> 16, (int16_t)(instruction & 0x0000FFFF), (instruction & 0x03E00000) >> 21);
-	int16_t offset = (int16_t)(instruction & 0x0000FFFF);
+	printf("C'est un LW $%d,%d($%d)\n", (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF, (instruction & 0x03E00000) >> 21);
+	int16_t offset = instruction & 0x0000FFFF;
 	int32_t address = lectureRegistre((instruction & 0x03E00000) >> 21) + offset;
 	if ((address & 0x00000003) != 0)
 		printf("Exception, adresse incorrecte\n");
@@ -197,7 +200,6 @@ void executer_srl(int32_t instruction)
 }
 void executer_sub(int32_t instruction)
 {
-	// NE MARCHE PAS POUR LES NOMBRES NEGATIFS
 	printf("C'est un SUB $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	int64_t res = (lectureRegistre((instruction & 0x03E00000) >> 21) - lectureRegistre((instruction & 0x001F0000) >> 16));
 	if (res > 4294967296)
@@ -207,8 +209,8 @@ void executer_sub(int32_t instruction)
 }
 void executer_sw(int32_t instruction)
 {
-	printf("C'est un SW $%d,%d($%d)\n", (instruction & 0x001F0000) >> 16, (int16_t)(instruction & 0x0000FFFF), (instruction & 0x03E00000) >> 21);
-	int16_t offset = (int16_t)(instruction & 0x0000FFFF);
+	printf("C'est un SW $%d,%d($%d)\n", (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF, (instruction & 0x03E00000) >> 21);
+	int16_t offset = instruction & 0x0000FFFF;
 	int32_t address = lectureRegistre((instruction & 0x03E00000) >> 21) + offset;
 	if ((address & 0x00000003) != 0)
 		printf("Exception, adresse incorrecte\n");
