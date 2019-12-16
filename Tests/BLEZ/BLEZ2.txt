@@ -3,12 +3,12 @@
 # Requirements :
 # ADDI, JR, NOP
 
-ADDI $8, $0, 5
-BLEZ $8, 4
+ADDI $8,$0,5
+BLEZ $8,4
 NOP
-ADDI $11, $0, 4
+ADDI $11,$0,4
 JR 3
-ADDI $11, $0, 8
+ADDI $11,$0,8
 JR 1
 NOP
 

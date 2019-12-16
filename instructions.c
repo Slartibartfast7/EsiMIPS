@@ -78,19 +78,26 @@ void executer_and(int32_t instruction)
 void executer_beq(int32_t instruction)
 {
 	printf("C'est un BEQ $%d,$%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF);
+	if (lectureRegistre((instruction & 0x03E00000) >> 21) == lectureRegistre((instruction & 0x001F0000) >> 16))
+		PC += ((instruction & 0x0000FFFF) << 2);
 }
 void executer_bgtz(int32_t instruction)
 {
 	printf("C'est un BGTZ $%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x0000FFFF));
-	//PROBLEME NOMBRE NEGATIF
+	if (lectureRegistre((instruction & 0x03E00000) >> 21) > 0)
+		PC += ((instruction & 0x0000FFFF) << 2);
 }
 void executer_blez(int32_t instruction)
 {
 	printf("C'est un BLEZ $%d,%d\n", (instruction & 0x03E00000) >> 21, instruction & 0x0000FFFF);
+	if (lectureRegistre((instruction & 0x03E00000) >> 21) <= 0)
+		PC += ((instruction & 0x0000FFFF) << 2);
 }
 void executer_bne(int32_t instruction)
 {
 	printf("C'est un BNE $%d,$%d,%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16, instruction & 0x0000FFFF);
+	if (lectureRegistre((instruction & 0x03E00000) >> 21) != lectureRegistre((instruction & 0x001F0000) >> 16))
+		PC += ((instruction & 0x0000FFFF) << 2);
 }
 void executer_div(int32_t instruction)
 {
@@ -106,7 +113,13 @@ void executer_div(int32_t instruction)
 }
 void executer_j(int32_t instruction)
 {
+<<<<<<< HEAD
+	uint32_t addr = (instruction & 0x03FFFFFF) << 2;
+	printf("C'est un J 0x%08X\n", addr);
+	PC = addr;
+=======
 	printf("C'est un J %08X\n", (instruction & 0x03FFFFFF));
+>>>>>>> 7390c3e64cbcbfe6a1cfc26e66b11b2d0c30321f
 }
 void executer_jal(int32_t instruction)
 {

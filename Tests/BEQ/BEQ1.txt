@@ -3,13 +3,13 @@
 # Requirements :
 # ADDI, JR, NOP
 
-ADDI $8, $0, 16
-ADDI $9, $0, 16
-BEQ $8, $9, 4
+ADDI $8,$0,16
+ADDI $9,$0,16
+BEQ $8,$9,4
 NOP
-ADDI $11, $0, 4
+ADDI $11,$0,4
 JR 3
-ADDI $11, $0, 8
+ADDI $11,$0,8
 JR 1
 NOP
 
