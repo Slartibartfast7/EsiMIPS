@@ -113,13 +113,10 @@ void executer_div(int32_t instruction)
 }
 void executer_j(int32_t instruction)
 {
-<<<<<<< HEAD
 	uint32_t addr = (instruction & 0x03FFFFFF) << 2;
 	printf("C'est un J 0x%08X\n", addr);
 	PC = addr;
-=======
-	printf("C'est un J %08X\n", (instruction & 0x03FFFFFF));
->>>>>>> 7390c3e64cbcbfe6a1cfc26e66b11b2d0c30321f
+
 }
 void executer_jal(int32_t instruction)
 {
