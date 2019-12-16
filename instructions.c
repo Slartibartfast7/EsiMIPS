@@ -121,6 +121,9 @@ void executer_j(int32_t instruction)
 void executer_jal(int32_t instruction)
 {
 	printf("C'est un JAL %d\n", (instruction & 0x03FFFFFF));
+	//Quel configuration on choisit ?
+	int32_t temp = lectureRegistre(instruction & 0x03FFFFFF);
+	PC = temp;
 }
 void executer_jr(int32_t instruction)
 {
@@ -158,13 +161,9 @@ void executer_mflo(int32_t instruction)
 }
 void executer_mult(int32_t instruction)
 {
-	//HI NE MARCHE PAS POUR LE MOMENT
 	printf("C'est un MULT $%d,$%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	int64_t prod;
 	prod = (int64_t)(lectureRegistre((instruction & 0x03E00000) >> 21)) * (int64_t)(lectureRegistre((instruction & 0x001F0000) >> 16));
-	//printf("%016X\n", (lectureRegistre((instruction & 0x03E00000) >> 21)));
-	//printf("%016lX * %016lX\n", (int64_t)(lectureRegistre((instruction & 0x03E00000) >> 21)), (int64_t)(lectureRegistre((instruction & 0x001F0000) >> 16)));
-	//printf("PROD : %016lX\n", prod);
 	LO = prod & 0x00000000FFFFFFFF;
 	HI = (prod & 0xFFFFFFFF00000000) >> 32;
 }
@@ -197,7 +196,6 @@ void executer_srl(int32_t instruction)
 }
 void executer_sub(int32_t instruction)
 {
-	// NE MARCHE PAS POUR LES NOMBRES NEGATIFS
 	printf("C'est un SUB $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	int64_t res = (lectureRegistre((instruction & 0x03E00000) >> 21) - lectureRegistre((instruction & 0x001F0000) >> 16));
 	if (res > 4294967296)
