@@ -161,13 +161,9 @@ void executer_mflo(int32_t instruction)
 }
 void executer_mult(int32_t instruction)
 {
-	//HI NE MARCHE PAS POUR LE MOMENT
 	printf("C'est un MULT $%d,$%d\n", (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	int64_t prod;
 	prod = (int64_t)(lectureRegistre((instruction & 0x03E00000) >> 21)) * (int64_t)(lectureRegistre((instruction & 0x001F0000) >> 16));
-	//printf("%016X\n", (lectureRegistre((instruction & 0x03E00000) >> 21)));
-	//printf("%016lX * %016lX\n", (int64_t)(lectureRegistre((instruction & 0x03E00000) >> 21)), (int64_t)(lectureRegistre((instruction & 0x001F0000) >> 16)));
-	//printf("PROD : %016lX\n", prod);
 	LO = prod & 0x00000000FFFFFFFF;
 	HI = (prod & 0xFFFFFFFF00000000) >> 32;
 }
