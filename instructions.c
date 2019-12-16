@@ -106,7 +106,7 @@ void executer_div(uint32_t instruction)
 }
 void executer_j(uint32_t instruction)
 {
-	printf("C'est un J %d\n", (instruction & 0x03FFFFFF));
+	printf("C'est un J %08X\n", (instruction & 0x03FFFFFF));
 }
 void executer_jal(uint32_t instruction)
 {
@@ -139,10 +139,12 @@ void executer_lw(uint32_t instruction)
 void executer_mfhi(uint32_t instruction)
 {
 	printf("C'est un MFHI $%d\n", (instruction & 0x0000F800) >> 11);
+	ecritureRegistre((instruction & 0x0000F800) >> 11 , HI);
 }
 void executer_mflo(uint32_t instruction)
 {
 	printf("C'est un MFLO $%d\n", (instruction & 0x0000F800) >> 11);
+	ecritureRegistre((instruction & 0x0000F800) >> 11 , LO);
 }
 void executer_mult(uint32_t instruction)
 {
