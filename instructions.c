@@ -22,7 +22,6 @@ int32_t recupererInstruction(int adresse)
 void decoderInstruction(int32_t instruction)
 {
 	int i;
-	//printf("%08X\n", instruction);
 	if((instruction & 0xFC000000) == 0) //R-Type
 	{
 		for(i = 0; i < sizeof(OPCODES_R)/sizeof(int); i++)
@@ -57,18 +56,22 @@ void decoderInstruction(int32_t instruction)
 void executer_add(int32_t instruction)
 {
 	printf("C'est un ADD $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
-	//Integer Overflow ??
-	int32_t temp;
+	int64_t temp;
 	temp = lectureRegistre((instruction & 0x03E00000) >> 21) + lectureRegistre((instruction & 0x001F0000) >> 16);
-	ecritureRegistre((instruction & 0x0000F800) >> 11,temp);
+	if(((temp & 0x100000000) >> 1) != (temp & 0x80000000))
+		executer_syscall(0x4C); //IntegerOverflow 
+	else
+		ecritureRegistre((instruction & 0x0000F800) >> 11,(int32_t)temp);
 }
 void executer_addi(int32_t instruction)
 {
 	printf("C'est un ADDI $%d,$%d,%d\n", (instruction & 0x001F0000) >> 16, (instruction & 0x03E00000) >> 21, instruction & 0x0000FFFF);
-	//Integer Overflow ??
-	int32_t temp;
-	temp = lectureRegistre((instruction & 0x001F0000) >> 16) + lectureRegistre((instruction & 0x03E00000) >> 21) + (instruction & 0x0000FFFF);
-	ecritureRegistre((instruction & 0x001F0000) >> 16,temp);
+	int64_t temp;
+	temp = lectureRegistre((instruction & 0x03E00000) >> 21) + (instruction & 0x0000FFFF);
+	if(((temp & 0x100000000) >> 1) != (temp & 0x80000000))
+		executer_syscall(0x4C); //IntegerOverflow 
+	else
+		ecritureRegistre((instruction & 0x001F0000) >> 16,(int32_t)temp);
 }
 void executer_and(int32_t instruction)
 {
@@ -119,7 +122,6 @@ void executer_j(int32_t instruction)
 }
 void executer_jal(int32_t instruction)
 {
-	// A tester
 	uint32_t addr = (instruction & 0x03FFFFFF) << 2;
 	printf("C'est un JAL %d\n", addr);
 	ecritureRegistre(31, (PC+8));
@@ -130,7 +132,7 @@ void executer_jr(int32_t instruction)
 	printf("C'est un JR $%d\n", (instruction & 0x03E00000) >> 21);
 	uint32_t temp = lectureRegistre((instruction & 0x03E00000) >> 21);
 	if((temp & 0x2) != 0)
-		perror("Problème d'alignement en mémoire");
+		executer_syscall(0x8C);
 	else
 		PC = temp;
 }
@@ -145,7 +147,7 @@ void executer_lw(int32_t instruction)
 	int16_t offset = instruction & 0x0000FFFF;
 	int32_t address = lectureRegistre((instruction & 0x03E00000) >> 21) + offset;
 	if ((address & 0x00000003) != 0)
-		printf("Exception, adresse incorrecte\n");
+		executer_syscall(0x8C);
 	else
 	{
 		ecritureRegistre(((instruction & 0x001F0000) >> 16), lectureMemoire(memoire, address) << 24);
@@ -183,7 +185,6 @@ void executer_or(int32_t instruction)
 }
 void executer_rotr(int32_t instruction)
 {
-	// A tester
 	printf("C'est un ROTR $%d,$%d,%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x001F0000) >> 16, (instruction & 0x000007C0) >> 6);
 	int s = (instruction & 0x000007C0) >> 6;
 	int32_t value = lectureRegistre((instruction & 0x001F0000) >> 16);
@@ -212,8 +213,10 @@ void executer_sub(int32_t instruction)
 {
 	printf("C'est un SUB $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
 	int64_t res = (lectureRegistre((instruction & 0x03E00000) >> 21) - lectureRegistre((instruction & 0x001F0000) >> 16));
-	if (res > 4294967296)
-		printf("Exception : overflow\n");
+	if(((res & 0x100000000) >> 1) != (res & 0x80000000))
+	{
+		executer_syscall(0x4C);
+	}
 	else
 		ecritureRegistre(((instruction & 0x0000F800) >> 11), (lectureRegistre((instruction & 0x03E00000) >> 21) - lectureRegistre((instruction & 0x001F0000) >> 16)));
 }
@@ -223,13 +226,19 @@ void executer_sw(int32_t instruction)
 	int16_t offset = instruction & 0x0000FFFF;
 	int32_t address = lectureRegistre((instruction & 0x03E00000) >> 21) + offset;
 	if ((address & 0x00000003) != 0)
-		printf("Exception, adresse incorrecte\n");
+		executer_syscall(0x8C);
 	else
 		ecritureMemoire(memoire, address, lectureRegistre((instruction & 0x001F0000) >> 16), 32);
 }
 void executer_syscall(int32_t instruction)
 {
-	printf("C'est un SYSCALL\n");
+	printf("/!\\ SYSCALL /!\\\n");
+	switch((instruction & 0x03FFFFC0) >> 6)
+	{
+		case(1):perror("Integer Overflow Error");break;
+		case(2):perror("Address Error");break;
+		default:printf("%08X\n", (instruction & 0x03FFFFC0) >> 6);
+	}
 }
 void executer_xor(int32_t instruction)
 {
