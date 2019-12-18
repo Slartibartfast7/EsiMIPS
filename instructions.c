@@ -198,6 +198,10 @@ void executer_sll(int32_t instruction)
 void executer_slt(int32_t instruction)
 {
 	printf("C'est un SLT $%d,$%d,$%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x03E00000) >> 21, (instruction & 0x001F0000) >> 16);
+	if(lectureRegistre((instruction & 0x03E00000) >> 21) < lectureRegistre((instruction & 0x001F0000) >> 16))
+		ecritureRegistre((instruction & 0x0000F800) >> 11,1);
+	else
+		ecritureRegistre((instruction & 0x0000F800) >> 11,0);
 }
 void executer_srl(int32_t instruction)
 {

@@ -1,5 +1,5 @@
 all: decodage.o memoire.o registre.o instructions.o main.o 
-	gcc -o main decodage.o memoire.o registre.o instructions.o main.o
+	gcc -o emul-mips decodage.o memoire.o registre.o instructions.o main.o
 
 main.o: main.c
 	gcc -g -c main.c -Wall -o main.o
