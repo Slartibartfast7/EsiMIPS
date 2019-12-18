@@ -48,53 +48,83 @@ void mode_test(char *inputFile, char *outputFile)
 
 void mode_interactif()
 {
-
+	char *entree = malloc(sizeof(char) * 40);
+	char op = 0;
+	while (1)
+	{
+		printf("Entrez une instruction :\n");
+		fgets(entree, 39, stdin);
+		if (!strcmp(entree, "EXIT"))
+			break;
+		else
+		{
+			decoderInstruction(strtol(decodeInstruction(entree), NULL, 16));
+			while(op != 'n')
+			{
+				if(op != '\n')
+				{
+					printf("Press\tn to go to the next instruction\n");
+					printf("\tr to see the registers\n");
+					printf("\tm to see the memory\n");
+				}
+				op = getchar();
+				switch(op)
+				{
+					case('n'):break;
+					case('r'):system("clear");afficherRegistres();;break;
+					case('m'):system("clear");afficherMemoire(memoire);break;
+				}
+			}
+		}
+	}
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
 	int i;
 	char *inputFile;
 	char *outputFile;
 
-	for (i = 1; i < argc; i++)
+	if (argc == 1) // mode interactif
+		mode_interactif();
+	else
 	{
-		if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) // aide
+		for (i = 1; i < argc; i++)
 		{
-			printf("Usage (interactif): ./emul-mips\n");
-			printf("Usage (mode pas à pas): ./emul-mips -pas [InputFile]\n");
-			printf("Usage (tests unitaires): ./emul-mips -tests [InputFile] [OutputFile]\n");
-			break;
-		}
-		else if (!strcmp(argv[i], "-pas")) // mode pas à pas
-		{
-			if (argc != 3)
+			if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) // aide
+			{
+				printf("Usage (interactif): ./emul-mips\n");
 				printf("Usage (mode pas à pas): ./emul-mips -pas [InputFile]\n");
-			else
-			{
-				inputFile = argv[(i == 2 ? 3 : 2)];
-				mode_pas_a_pas(inputFile);
-			}
-			break;
-		}
-		else if (!strcmp(argv[i], "-tests")) // mode tests unitaires
-		{
-			if (argc != 4)
 				printf("Usage (tests unitaires): ./emul-mips -tests [InputFile] [OutputFile]\n");
-			else
-			{
-				inputFile = argv[(i == 2 ? 3 : 2)];
-				outputFile = argv[(i == 2 ? 4 : 3)];
-				mode_test(inputFile, outputFile);
+				break;
 			}
-			break;
-		}
-		else // mode interactif
-		{
-			mode_interactif();
-			break;
+			else if (!strcmp(argv[i], "-pas")) // mode pas à pas
+			{
+				if (argc != 3)
+					printf("Usage (mode pas à pas): ./emul-mips -pas [InputFile]\n");
+				else
+				{
+					inputFile = argv[(i == 2 ? 3 : 2)];
+					mode_pas_a_pas(inputFile);
+				}
+				break;
+			}
+			else if (!strcmp(argv[i], "-tests")) // mode tests unitaires
+			{
+				if (argc != 4)
+					printf("Usage (tests unitaires): ./emul-mips -tests [InputFile] [OutputFile]\n");
+				else
+				{
+					inputFile = argv[(i == 2 ? 3 : 2)];
+					outputFile = argv[(i == 2 ? 4 : 3)];
+					mode_test(inputFile, outputFile);
+				}
+				break;
+			}
 		}
 	}
+
+
 
 	return 0;
 }
