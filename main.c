@@ -50,15 +50,22 @@ void mode_interactif()
 {
 	char entree[40];
 	char op = 0;
-	char c;
-	while (1)
+	char continuer = 1;
+	
+	while (continuer)
 	{
 		printf("Entrez une instruction :\n");
-		fgets(entree, 39, stdin);
+
+		// Resolution temporaire du bug
+		entree[0] = 0;
+		while (entree[0] == '\0' || entree[0] == '\n')
+			fgets(entree, 39, stdin);
+
 		entree[strlen(entree)-1] = '\0';
+
 		if (!strcmp(entree, "EXIT"))
 		{
-			break;
+			continuer = 0;
 		}
 		else
 		{
