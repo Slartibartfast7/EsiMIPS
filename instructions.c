@@ -183,11 +183,11 @@ void executer_or(int32_t instruction)
 }
 void executer_rotr(int32_t instruction)
 {
-	// A tester, je crois que j'ai fait sur la gauche et pas la droite ...
+	// A tester
 	printf("C'est un ROTR $%d,$%d,%d\n", (instruction & 0x0000F800) >> 11, (instruction & 0x001F0000) >> 16, (instruction & 0x000007C0) >> 6);
 	int s = (instruction & 0x000007C0) >> 6;
 	int32_t value = lectureRegistre((instruction & 0x001F0000) >> 16);
-	int32_t temp = (value << s) | (value >> (32 - s));
+	int32_t temp = (value >> s) | (value << (32 - s));
 	ecritureRegistre((instruction & 0x0000F800) >> 11, temp);
 }
 void executer_sll(int32_t instruction)
