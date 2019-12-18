@@ -3,9 +3,9 @@
 # Requirements :
 # ADDI
 
-ADDI $8, $0, 16
+ADDI $8,$0,16
 J 00000000000000000000010010
-ADDI $9, $0, 16
-ADDI $9, $9, 4
+ADDI $9,$0,16
+ADDI $9,$9,4
 
 # Expected : $9 value is 4
