@@ -51,7 +51,7 @@ void mode_interactif()
 
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
 	int i;
 	char *inputFile;
