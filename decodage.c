@@ -62,23 +62,38 @@ void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 	size_t taille = 20;
 	char* ligne = (char *)malloc(taille * sizeof(char));
 	char hexa[9];
+	FILE* fichierIn;
+	FILE* fichierOut;
 	//Ouverture des fichiers d'entrée et de sortie
-	FILE* fichierIn = fopen(fichierEntree, "r");
-	FILE* fichierOut = fopen(fichierSortie, "w+");
+	fichierIn = fopen(fichierEntree, "r");
+
+	if (fichierSortie != NULL)
+	{
+		fichierOut = fopen(fichierSortie, "w+");
+	}
+
 	if(fichierIn == NULL) perror("Problème lors de l'ouverture du fichier d'entrée");
-	if(fichierOut == NULL) perror("Problème de l'écriture du fichier de sortie");
+	if(fichierOut == NULL && fichierSortie != NULL) perror("Problème de l'écriture du fichier de sortie");
 	while((lecture = getline(&ligne, &taille, fichierIn)) != -1) //Récupération d'une ligne jusqu'à la fin du fichier
 	{
 		strcpy(hexa,decodeInstruction(ligne));
         if(strlen(hexa)) //Si la ligne décodée n'est pas vide, on l'écrit
         {
-        	fprintf(fichierOut, "%s\n", hexa);
+					if (fichierSortie != NULL)
+					{
+        		fprintf(fichierOut, "%s\n", hexa);
+					}
+
         	ecritureMemoire(memoire, TAILLE_PROGRAMME + DEBUT_PROGRAMME, strtol(hexa, NULL, 16), 32);
         	TAILLE_PROGRAMME += 4;
         }
     }
     fclose(fichierIn);
-    fclose(fichierOut);
+
+		if (fichierSortie != NULL)
+		{
+    	fclose(fichierOut);
+		}
 }
 
 char* conversionBinaire(const int aConvertir, const int taille)
@@ -246,7 +261,7 @@ char *decode_j(const char* instruction)
 
 	sprintf(instructionBinaire, "000010");
 	sprintf(instructionBinaire+6, operande(instruction,1));
-	return instructionBinaire;	
+	return instructionBinaire;
 }
 char *decode_jal(const char* instruction)
 {
@@ -254,7 +269,7 @@ char *decode_jal(const char* instruction)
 
 	sprintf(instructionBinaire, "000011");
 	sprintf(instructionBinaire+6, operande(instruction,1));
-	return instructionBinaire;	
+	return instructionBinaire;
 }
 char *decode_jr(const char* instruction)
 {
