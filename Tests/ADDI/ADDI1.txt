@@ -3,7 +3,7 @@
 # Requirements :
 # None
 
-ADDI $8, $0, 128
-ADDI $9, $8, 16
+ADDI $8,$0,128
+ADDI $9,$8,16
 
 # Expected : $9 value is 144

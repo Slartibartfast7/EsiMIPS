@@ -3,9 +3,9 @@
 # Requirements :
 # ADDI, MFLO, MFHI
 
-ADDI $8, $0, 16
-ADDI $9, $0, 16
-DIV $8, $9
+ADDI $8,$0,16
+ADDI $9,$0,16
+DIV $8,$9
 MFHI $10
 MFLO $11
 

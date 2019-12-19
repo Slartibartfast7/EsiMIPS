@@ -3,9 +3,8 @@
 # Requirements :
 # ADDI
 
-ADDI $8, $0, 128
-ADDI $9, $0, 16
-ADD $10, $8, $9
+ADDI $8,$0,128
+ADDI $9,$0,16
+ADD $10,$8,$9
 
 # Expected : $10 value is 144
-

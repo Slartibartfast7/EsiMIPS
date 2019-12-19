@@ -3,7 +3,7 @@
 # Requirements :
 # None
 
-ADDI $8, $0, 3000000000
-ADDI $9, $8, 3000000000
+ADDI $8,$0,3000000000
+ADDI $9,$8,3000000000
 
 # Expected : Exception TRAP

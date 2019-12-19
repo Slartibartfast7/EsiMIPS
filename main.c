@@ -48,17 +48,29 @@ void mode_test(char *inputFile, char *outputFile)
 
 void mode_interactif()
 {
-	char *entree = malloc(sizeof(char) * 40);
+	char entree[40];
 	char op = 0;
-	while (1)
+	char continuer = 1;
+	
+	while (continuer)
 	{
 		printf("Entrez une instruction :\n");
-		fgets(entree, 39, stdin);
+
+		// Resolution temporaire du bug
+		entree[0] = 0;
+		while (entree[0] == '\0' || entree[0] == '\n')
+			fgets(entree, 39, stdin);
+
+		entree[strlen(entree)-1] = '\0';
+
 		if (!strcmp(entree, "EXIT"))
-			break;
+		{
+			continuer = 0;
+		}
 		else
 		{
 			decoderInstruction(strtol(decodeInstruction(entree), NULL, 16));
+			op = 0;
 			while(op != 'n')
 			{
 				if(op != '\n')

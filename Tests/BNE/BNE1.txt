@@ -8,9 +8,7 @@ ADDI $9,$0,15
 BNE $8,$9,4
 NOP
 ADDI $11,$0,4
-JR 3
 ADDI $11,$0,8
-JR 1
 NOP
 
 # Expected : $11 value is 8
