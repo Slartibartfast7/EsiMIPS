@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 void ecritureMemoire(uint8_t* memoire, uint32_t adresse, uint32_t valeur, int taille)
+//Ecrit dans la mémoire à l'adresse indiquée la valeur donnée (peut écrire sur plusieurs octets selon la taille donnée)
 {
 	if(adresse >= TAILLE_MEMOIRE || adresse < 0) perror("Out of memory");
 	int i;
@@ -21,6 +22,7 @@ uint8_t lectureMemoire(uint8_t* memoire, uint32_t adresse)
 }
 
 void afficherMemoire(uint8_t* memoire)
+//Affiche toutes les valeurs présentes dans la mémoire
 {
 	int i;
 	printf("MEMOIRE :\n==========================================================\n");
