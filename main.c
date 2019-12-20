@@ -51,7 +51,7 @@ void mode_interactif()
 	char entree[40];
 	char op = 0;
 	char continuer = 1;
-	
+
 	while (continuer)
 	{
 		printf("Entrez une instruction :\n");
@@ -89,6 +89,8 @@ void mode_interactif()
 			}
 		}
 	}
+	system("clear");
+	printf("Execution du programme terminée\n");
 }
 
 int main(int argc, char *argv[])
@@ -101,7 +103,7 @@ int main(int argc, char *argv[])
 		mode_interactif();
 	else
 	{
-		for (i = 1; i < argc; i++)
+		for (i = 1; i < argc; i++) // On recherche les arguments parmi les paramètres
 		{
 			if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) // aide
 			{
@@ -116,7 +118,7 @@ int main(int argc, char *argv[])
 					printf("Usage (mode pas à pas): ./emul-mips -pas [InputFile]\n");
 				else
 				{
-					inputFile = argv[(i == 2 ? 3 : 2)];
+					inputFile = argv[(i == 2 ? 3 : 2)]; // Permet d'utiliser ./emul-mips -pas [InputFile] ou ./emul-mips [InputFile] -pas
 					mode_pas_a_pas(inputFile);
 				}
 				break;
@@ -135,8 +137,5 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-
-
-
 	return 0;
 }
