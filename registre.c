@@ -6,6 +6,7 @@ void ecritureRegistre(int32_t registre, int32_t valeur)
 {
 	registreProc[registre] = valeur;
 	if(registre == 0x0) registreProc[registre] = 0x0;
+	//Même après écriture, le registre $0 garde la valeur 0x0
 }
 
 int32_t lectureRegistre(int32_t registre)

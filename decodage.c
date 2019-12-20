@@ -11,6 +11,7 @@ char *(*FCT_OPCODES[])(const char*) = {decode_add, decode_addi, decode_and, deco
 const char *TXT_ALIAS[] = {"$zero", "$at", "$v0", "$v1", "$a0", "$a1", "$a2", "$a3", "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7", "$s0", "$s1", "$s2", "$s3", "$s4", "$s5", "$s6", "$s7", "$t8", "$t9", "$k0", "$k1", "$gp", "$sp", "$fp", "$ra"};
 
 char *decodeInstruction(char *bufEntree)
+//Décode l'instruction assembleur en instruction hexadécimale en lançant la fonction de décodage associée
 {
 	int i = 0;
 	char *bufptrEntree = bufEntree;
@@ -51,6 +52,7 @@ char *decodeInstruction(char *bufEntree)
 		//Fonction de décodage associée
 		bufptrSortie = (*FCT_OPCODES[i])(bufptrEntree);
 		sprintf(instructionHexa,"%08X",(unsigned int)strtol(bufptrSortie, NULL, 2));
+		printf("%s\n", instructionHexa);
 	}
 	return instructionHexa;
 }
@@ -58,6 +60,7 @@ char *decodeInstruction(char *bufEntree)
 void conversionFichier(const char* fichierEntree, const char* fichierSortie)
 {
 	//Ouvre le fichier d'entrée, traduit chacune des lignes en hexadécimale
+	//et écrit en mémoire les instructions obtenues à partir de DEBUT PROGRAMME
 	int lecture;
 	size_t taille = 20;
 	char* ligne = (char *)malloc(taille * sizeof(char));
@@ -110,7 +113,7 @@ char* conversionBinaire(const int aConvertir, const int taille)
 }
 
 char* operande(const char* instruction, int rangOperande)
-//A partir d'une instruction, donne l'opérande indiquée
+//A partir d'une instruction, donne l'opérande au rang indiqué
 {
 	char* testFrontiere = malloc(20*sizeof(char));
 	int i;

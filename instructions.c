@@ -9,6 +9,7 @@ void (*FCT_OPCODES_EXEC_R[])(int32_t) = {executer_add, executer_and, executer_di
 void (*FCT_OPCODES_EXEC_IJ[])(int32_t) = {executer_addi, executer_beq, executer_bgtz, executer_blez, executer_bne, executer_j, executer_jal, executer_lui, executer_lw, executer_sw};
 
 int32_t recupererInstruction(int adresse)
+//Lit une instruction de 4 octets en mémoire à l'adresse donnée
 {
 	int32_t instruction = 0;
 	if(adresse < DEBUT_PROGRAMME) perror("Mauvaise adresse");
@@ -20,6 +21,7 @@ int32_t recupererInstruction(int adresse)
 	return instruction;
 }
 void decoderInstruction(int32_t instruction)
+//Lit l'opcode d'une instruction et lance la fonction d'exécution associée
 {
 	int i;
 	if((instruction & 0xFC000000) == 0) //R-Type
@@ -29,12 +31,15 @@ void decoderInstruction(int32_t instruction)
 			if((instruction & 0x3F) == OPCODES_R[i])
 			{
 				if(instruction == 0)
+					//Cas du NOP
 					executer_nop(instruction);
 				else if((instruction & 0x3F) == 2)
 				{
 					if(instruction & 0x00200000)
+						//Cas du ROTR
 						executer_rotr(instruction);
 					else
+						//Cas du SRL
 						executer_srl(instruction);
 					break;
 				}
@@ -235,8 +240,8 @@ void executer_syscall(int32_t instruction)
 	printf("/!\\ SYSCALL /!\\\n");
 	switch((instruction & 0x03FFFFC0) >> 6)
 	{
-		case(1):perror("Integer Overflow Error");break;
-		case(2):perror("Address Error");break;
+		case(1):perror("Integer Overflow Error");break; //Si on repère un overflow lors d'une addition/soustraction
+		case(2):perror("Address Error");break;//Si on essaie d'accéder à une adresse non alignée en mémoire.
 		default:printf("%08X\n", (instruction & 0x03FFFFC0) >> 6);
 	}
 }
