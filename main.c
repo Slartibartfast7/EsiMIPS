@@ -55,6 +55,7 @@ void mode_interactif()
 	while (continuer)
 	{
 		printf("Entrez une instruction :\n");
+
 		entree[0] = 0;
 		while (entree[0] == '\0' || entree[0] == '\n')
 			fgets(entree, 39, stdin);
